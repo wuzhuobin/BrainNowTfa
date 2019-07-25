@@ -4,7 +4,7 @@ ExternalProject_Add(
   TMP_DIR
   ${CMAKE_BINARY_DIR}/xlint-tmp
   STAMP_DIR
-  ${CMAKE_BINARY_DIR}/xlin-stamp
+  ${CMAKE_BINARY_DIR}/xlint-stamp
   DOWNLOAD_DIR
   ${CMAKE_BINARY_DIR}/xlint
   SOURCE_DIR
@@ -13,8 +13,8 @@ ExternalProject_Add(
   ${CMAKE_BINARY_DIR}/xlint-build
   INSTALL_DIR
   ${CMAKE_BINARY_DIR}/xlint-install
-  LOG_DIR
-  ${CMAKE_BINARY_DIR}/xlint-log
+  # LOG_DIR
+  # ${CMAKE_BINARY_DIR}/xlint-log
   GIT_REPOSITORY
   "https://github.com/tfussell/xlnt.git"
   GIT_TAG
