@@ -1,0 +1,22 @@
+include(ExternalProject)
+ExternalProject_Add(
+  eigen
+  TMP_DIR
+  ${CMAKE_BINARY_DIR}/eigen-tmp
+  STAMP_DIR
+  ${CMAKE_BINARY_DIR}/eigen-stamp
+  DOWNLOAD_DIR
+  ${CMAKE_BINARY_DIR}/eigen
+  SOURCE_DIR
+  ${CMAKE_BINARY_DIR}/eigen
+  BINARY_DIR
+  ${CMAKE_BINARY_DIR}/eigen-build
+  INSTALL_DIR
+  ${CMAKE_BINARY_DIR}/eigen-install
+  GIT_REPOSITORY
+  "https://github.com/eigenteam/eigen-git-mirror.git"
+  GIT_TAG
+  "3.3.7"
+  INSTALL_COMMAND
+  ""
+)
