@@ -1,8 +1,12 @@
 #include <iostream>
 #include <cstdlib>
+#include <QApplication>
+#include "BnMainWindow.h"
 
 int main(int argc, char* argv[]) {
-  using namespace std;
-  cout << "hello world\n";
-  return EXIT_SUCCESS;
+  QApplication app(argc, argv);
+  BnMainWindow w;
+  w.show();
+
+  return app.exec();
 }
