@@ -147,7 +147,7 @@ dbp_detrended = dbp_at_2hz - dbp_3_polynomial(interpolate);
 map_detrended = map_at_2hz - map_3_polynomial(interpolate);
 
 #%% W28
-map_percent_at_2hz = map_percent_at_2hz - map_percent_3_polynomial(interpolate);
+map_percent_detrended = map_percent_at_2hz - map_percent_3_polynomial(interpolate);
 
 #%% W29
 vmean_i_detrended = vmean_i_at_2hz - vmean_i_3_polynomial(interpolate);
@@ -162,9 +162,59 @@ vmean_r_detrended = vmean_r_at_2hz - vmean_r_3_polynomial(interpolate);
 vmean_percent_r_detrended = vmean_percent_r_at_2hz - vmean_percent_r_3_polynomial(interpolate);
 
 #%% W33
-rr_psd = scipy.signal.welch(x=rr_detrended, nperseg=256);
-matplotlib.pyplot.plot(rr_psd[0], rr_psd[1]);
-matplotlib.pyplot.show();
-print(rr_psd[1])
+rr_psd = scipy.signal.welch(x=rr_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hamming');
+# matplotlib.pyplot.plot(rr_psd[0][0: 63], rr_psd[1][0: 63]);
+# matplotlib.pyplot.show();
+
+#%% W34
+hr_psd = scipy.signal.welch(x=hr_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hamming');
+
+#%% W35
+sbp_psd = scipy.signal.welch(x=sbp_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hamming');
+
+#%% W36
+dbp_psd = scipy.signal.welch(x=dbp_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hamming');
+
+#%% W37
+map_psd = scipy.signal.welch(x=map_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hamming');
+# matplotlib.pyplot.plot(map_psd[0][0: 63], map_psd[1][0: 63]);
+# matplotlib.pyplot.show();
+
+#%% W38
+map_percent_psd = scipy.signal.welch(x=map_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hamming');
+
+#%% W39
+vmean_i_psd = scipy.signal.welch(x=vmean_i_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hamming');
+
+#%% W40
+vmean_percent_i_psd = scipy.signal.welch(x=vmean_percent_i_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hamming');
+
+#%% W41
+vmean_r_psd = scipy.signal.welch(x=vmean_r_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hamming');
+
+#%% W42
+vmean_percent_r_psd = scipy.signal.welch(x=vmean_percent_r_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hamming');
+matplotlib.pyplot.plot(vmean_percent_r_psd[0], vmean_percent_r_psd[1])
+matplotlib.pyplot.show()
+
+#%% W43
+brs_cross_spectra = scipy.signal.csd(sbp_detrended, rr_detrended)
+matplotlib.pyplot.plot(brs_cross_spectra[0], brs_cross_spectra[1])
+matplotlib.pyplot.show()
+
+
+#%% W44
+# brs_gain = scipy.signal.spectrogram()
+
+#%% W45
+brs_phase = [brs_cross_spectra[0], numpy.angle(brs_cross_spectra[1])]
+matplotlib.pyplot.plot(brs_phase[0], brs_phase[1])
+matplotlib.pyplot.show()
+
+
+#%% W46
+brs_coherence = scipy.signal.coherence(sbp_detrended, rr_detrended)
+matplotlib.pyplot.plot(brs_coherence[0], brs_coherence[1])
+matplotlib.pyplot.show()
 
 #%%
