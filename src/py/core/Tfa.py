@@ -57,12 +57,13 @@ def tfaCal(x, y):
   pass
   print('tfaCal')
   cross_F, cross = sg.csd(x=x, y=y, fs=2, return_onesided=False)
+  coh_F, coh = sg.coherence(x=x, y=y, fs=2)
   psd_F_x, psd_x = sg.welch(x=x, fs=2, return_onesided=False)
   trans_F = psd_F_x
   trans = cross / psd_x
   phase = np.angle(cross)
   gain = np.abs(trans)
-  return psd_F_x, psd_x, cross, trans, phase, gain
+  return psd_F_x, psd_x, cross, trans, coh, phase, gain
 
 #%%
 def psd(x):

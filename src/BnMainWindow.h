@@ -7,6 +7,9 @@ class BnMainWindow: public QMainWindow
 public:
   explicit BnMainWindow(QWidget *parent = nullptr);
   virtual ~BnMainWindow();
+private Q_SLOTS:
+  void on_actionOpen_triggered();
+  void on_actionExit_triggered();
 private:
   Ui::BnMainWindow *ui;
 };
