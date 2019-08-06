@@ -4,39 +4,13 @@ import pandas;
 import numpy;
 import scipy.signal;
 # import matplotlib.pyplot;
-
-#%%
-def loadExcel(path):
-  pass
-  print(__func__)
-  # column 1
-  rri = data['R-R'].values
-  # column 2
-  time = data['Time'].values
-  # column 3
-  sbp = data['sBP'].values
-  # column 4
-  dbp = data['dBP'].values
-  # column 5
-  mbp = data['mBP'].values
-  # column 6
-  scbfl = data['sCBF_l'].values
-  # column 7
-  dcbfl = data['dCBF_l'].values
-  # column 8
-  cbfl = data['CBF_l'].values
-  # column 9
-  scbfr = data['sCBF_r'].values
-  # column 10
-  dcbfr = data['dCBF_r'].values
-  # column 11
-  cbfr = data['CBF_r'].values
-  return rri, time, sbp, dbp, mbp, scbfl, dcbfl, cbfl, scbfr, dcbfr, cbfr
-#%%   
+#%% path
+path = 'patient orinigal data.xlsx'
 
 def core(path):
   pass
 #%% data
+  print('read_excel')
   data = pandas.read_excel(path)
 #%%
   # column 1
@@ -94,7 +68,7 @@ def core(path):
   # matplotlib.pyplot.show()
 
 #%% W9  xyinterp(W2,col(W1,8),0.5)
-  vmean_i_at_2hz = numpy.interp(x=interpolate, xp=time, fp=cbfl)
+  vmean_l_at_2hz = numpy.interp(x=interpolate, xp=time, fp=cbfl)
   # matplotlib.pyplot.plot(interpolate, vmean_i_at_2hz)
   # matplotlib.pyplot.show()
 
@@ -144,7 +118,7 @@ def core(path):
   # matplotlib.pyplot.show()
 
 #%% W19 Polygraph(polyfit(W9,3,-1),xvals(W9)) 
-  vmean_i_3_polynomial = numpy.poly1d(numpy.polyfit(x=interpolate, y=vmean_i_at_2hz, deg=3))
+  vmean_l_3_polynomial = numpy.poly1d(numpy.polyfit(x=interpolate, y=vmean_l_at_2hz, deg=3))
   # matplotlib.pyplot.plot(interpolate, vmean_i_3_polynomial(interpolate))
   # matplotlib.pyplot.show()
 
@@ -194,12 +168,12 @@ def core(path):
   # matplotlib.pyplot.show()
 
 #%% W29 W9-W19
-  vmean_i_detrended = vmean_i_at_2hz - vmean_i_3_polynomial(interpolate)
+  vmean_l_detrended = vmean_l_at_2hz - vmean_l_3_polynomial(interpolate)
   # matplotlib.pyplot.plot(interpolate, vmean_i_detrended)
   # matplotlib.pyplot.show()
 
 #%% W30 W10-W20
-  vmean_percent_i_detrended = vmean_percent_i_at_2hz - vmean_percent_i_3_polynomial(interpolate)
+  vmean_percent_l_detrended = vmean_percent_i_at_2hz - vmean_percent_i_3_polynomial(interpolate)
   # matplotlib.pyplot.plot(interpolate, vmean_percent_i_detrended)
   # matplotlib.pyplot.show()
 
@@ -244,12 +218,12 @@ def core(path):
   # matplotlib.pyplot.show()
   
 #%% W39 extract(Wpsd(W29,256,128,256), 1,64)
-  vmean_i_psd = scipy.signal.welch(x=vmean_i_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
+  vmean_l_psd = scipy.signal.welch(x=vmean_l_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(vmean_i_psd[0][0: 63], vmean_i_psd[1][0: 63])
   # matplotlib.pyplot.show()
 
 #%% W40 extract(Wpsd(W30,256,128,256), 1,64)
-  vmean_percent_i_psd = scipy.signal.welch(x=vmean_percent_i_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
+  vmean_percent_i_psd = scipy.signal.welch(x=vmean_percent_l_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(vmean_percent_i_psd[0][0: 63], vmean_percent_i_psd[1][0: 63])
   # matplotlib.pyplot.show()
 
@@ -284,7 +258,7 @@ def core(path):
   # matplotlib.pyplot.show()
 
 #%% W47 extract(Wpxy(W27,W29,256,128,256), 1, 64)
-  l_dca_cross_spectra = scipy.signal.csd(x=map_detrended, y=vmean_i_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)
+  l_dca_cross_spectra = scipy.signal.csd(x=map_detrended, y=vmean_l_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)
   # matplotlib.pyplot.plot(l_dca_cross_spectra[0][0: 63], l_dca_cross_spectra[1][0: 63])
   # matplotlib.pyplot.show()
 
@@ -294,12 +268,12 @@ def core(path):
   # matplotlib.pyplot.show()
 
 #%% W49 mag(extract(Wtxy(W27,W30,256,128,256),1,64))
-  l_dca_gain_percent = scipy.signal.csd(x=map_detrended, y=vmean_percent_i_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1] / scipy.signal.welch(map_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
+  l_dca_gain_percent = scipy.signal.csd(x=map_detrended, y=vmean_percent_l_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1] / scipy.signal.welch(map_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
   # matplotlib.pyplot.plot(map_psd[0][0: 63], numpy.absolute(l_dca_gain_percent[0: 63]))
   # matplotlib.pyplot.show()
 
 #%% W50  mag(extract(Wtxy(W28,W30,256,128,256),1,64))
-  l_dca_gain_percent_percent = scipy.signal.csd(x=map_percent_detrended, y=vmean_percent_i_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]/scipy.signal.welch(map_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
+  l_dca_gain_percent_percent = scipy.signal.csd(x=map_percent_detrended, y=vmean_percent_l_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]/scipy.signal.welch(map_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
   # matplotlib.pyplot.plot(map_psd[0][0: 63], numpy.absolute(l_dca_gain_percent_percent[0: 63]))
   # matplotlib.pyplot.show()
 
@@ -309,7 +283,7 @@ def core(path):
   # matplotlib.pyplot.show()
 
 #%% W52 extract(Wcoh(W27,W29,256,128,256),1,64)
-  l_dca_coherence = scipy.signal.coherence(x=map_detrended, y=vmean_i_detrended, fs=2.0, window='hann', nperseg=256, noverlap=128, nfft=256)
+  l_dca_coherence = scipy.signal.coherence(x=map_detrended, y=vmean_l_detrended, fs=2.0, window='hann', nperseg=256, noverlap=128, nfft=256)
   # matplotlib.pyplot.plot(l_dca_coherence[0][0: 63], l_dca_coherence[1][0: 63])
   # matplotlib.pyplot.show()
 
@@ -329,7 +303,7 @@ def core(path):
   # matplotlib.pyplot.show()
 
 #%% W56  mag(extract(Wtxy(W28,W32,256,128,256),1,64))
-  r_dca_gain_percent_percent = scipy.signal.csd(x=map_percent_detrended, y=vmean_percent_i_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=True)[1]/map_psd[1]
+  r_dca_gain_percent_percent = scipy.signal.csd(x=map_percent_detrended, y=vmean_percent_l_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=True)[1]/map_psd[1]
   # matplotlib.pyplot.plot(map_psd[0][0: 63], numpy.absolute(r_dca_gain_percent_percent[0: 63]))
   # matplotlib.pyplot.show()
 
@@ -345,5 +319,21 @@ def core(path):
 
 #%%
   data_frame = pandas.DataFrame()
-  data_frame['r_dca_coherence'] = r_dca_coherence
+  # data_frame['brs_cross_spectra'] = brs_cross_spectra[1][0: 63]
+
+  # data_frame['brs_gain'] = brs_gain[0: 63]
+  # data_frame['brs_phase'] = brs_phase[1][0: 63]
+  # data_frame['brs_coherence'] = brs_coherence[1][0: 63]
+  # data_frame['l_dca_gain'] = l_dca_gain[0: 63]
+  # data_frame['l_dca_phase'] = l_dca_phase[1][0: 63]
+  # data_frame['l_dca_coherence'] = l_dca_coherence[1][0: 63]
+  # data_frame['l_dca_gain_percent'] = l_dca_gain_percent[0: 63]
+  # data_frame['l_dca_gain_percent_percent'] = l_dca_gain_percent_percent[0: 63]
+  # data_frame['r_dca_gain'] = r_dca_gain[0: 63]
+  # data_frame['r_dca_phase'] = r_dca_phase[1][0: 63]
+  # data_frame['r_dca_coherence'] = r_dca_coherence[1][0: 63]
+  # data_frame['r_dca_gain_percent'] = r_dca_gain_percent[0: 63]
+  # data_frame['r_dca_gain_percent_percent'] = r_dca_gain_percent_percent[0: 63]
   data_frame.to_excel(path.split('.')[0] + '_result.xlsx')
+
+#%%

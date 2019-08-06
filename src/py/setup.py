@@ -9,6 +9,7 @@ setup(
     'numpy',
     'pandas',
     'xlrd',
-    'scipy'
+    'scipy',
+    'openpyxl'
   ]
 )

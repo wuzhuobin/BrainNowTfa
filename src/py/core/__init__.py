@@ -1,1 +1,1 @@
-from core.tfa import *
+from core.core import *
