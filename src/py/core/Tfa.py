@@ -63,7 +63,7 @@ def tfaCal(x, y):
   trans = cross / psd_x
   phase = np.angle(cross)
   gain = np.abs(trans)
-  return psd_F_x, psd_x, cross, trans, coh, phase, gain
+  return psd_F_x, psd_x, cross_F, cross, trans, coh, phase, gain
 
 #%%
 def psd(x):
