@@ -321,6 +321,7 @@ def core(path):
   data_frame = pandas.DataFrame()
   # data_frame['brs_cross_spectra'] = brs_cross_spectra[1][0: 63]
 
+  # data_frame['F'] = brs_coherence[0][0: 63]
   # data_frame['brs_gain'] = brs_gain[0: 63]
   # data_frame['brs_phase'] = brs_phase[1][0: 63]
   # data_frame['brs_coherence'] = brs_coherence[1][0: 63]
@@ -334,6 +335,18 @@ def core(path):
   # data_frame['r_dca_coherence'] = r_dca_coherence[1][0: 63]
   # data_frame['r_dca_gain_percent'] = r_dca_gain_percent[0: 63]
   # data_frame['r_dca_gain_percent_percent'] = r_dca_gain_percent_percent[0: 63]
+
+
+  data_frame['F'] = brs_coherence[0][0: 63]
+  data_frame['l_gain'] = numpy.abs(l_dca_gain[0: 63])
+  data_frame['l_phase'] = l_dca_phase[1][0: 63]
+  data_frame['l_coherence'] = l_dca_coherence[1][0: 63]
+  data_frame['r_gain'] = numpy.abs(r_dca_gain[0: 63])
+  data_frame['r_phase'] = r_dca_phase[1][0: 63]
+  data_frame['r_coherence'] = r_dca_coherence[1][0: 63]
+
   data_frame.to_excel(path.split('.')[0] + '_result.xlsx')
+
+  # 0.05hz-0.1hz
 
 #%%
