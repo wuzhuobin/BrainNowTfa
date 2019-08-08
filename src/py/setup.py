@@ -11,5 +11,8 @@ setup(
     'xlrd',
     'scipy',
     'openpyxl'
-  ]
+  ],
+  entry_points = {
+    'console_scripts': ['tfa=tfa.cli:main'],
+  }
 )

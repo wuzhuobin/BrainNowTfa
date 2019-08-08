@@ -345,8 +345,43 @@ def core(path):
   data_frame['r_phase'] = r_dca_phase[1][0: 63]
   data_frame['r_coherence'] = r_dca_coherence[1][0: 63]
 
+
   data_frame.to_excel(path.split('.')[0] + '_result.xlsx')
 
   # 0.05hz-0.1hz
 
 #%%
+  vlf = data_frame.query('F > 0.02 & F < 0.07').mean()
+  lf = data_frame.query('F > 0.07 & F < 0.2').mean()
+  hf = data_frame.query('F > 0.2 & F < 0.35').mean()
+  vlf_l = vlf.l_gain
+  vlf_r = vlf.r_gain
+  lf_l = lf.l_gain
+  lf_r = lf.r_gain
+  hf_l = hf.l_gain
+  hf_r = hf.r_gain
+
+#%%
+  means = data_frame.mean()
+  phase_infract = means.l_phase
+  gain_infract = means.l_gain
+  coherence_infract = means.l_coherence
+  phase_normal = means.r_phase
+  gain_normal = means.r_gain
+  coherence_normal = means.r_coherence
+
+#%%
+  return (
+    vlf_l, 
+    vlf_r, 
+    lf_l, 
+    lf_r, 
+    hf_l, 
+    hf_r, 
+    phase_infract, 
+    gain_infract, 
+    coherence_infract,
+    phase_normal,
+    gain_normal,
+    coherence_normal
+  )
