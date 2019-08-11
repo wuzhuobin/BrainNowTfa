@@ -1,20 +1,21 @@
 #%%
 # conda install pandas numpy xlrd
-import pandas;
-import numpy;
-import scipy.signal;
+import pandas
+import numpy
+import scipy.signal
+import sys
 # import matplotlib.pyplot;
 #%% path
-path = 'patient orinigal data.xlsx'
+input_xlsx = 'patient orinigal data.xlsx'
 
-def core(path):
+def core(input_xlsx, output_xlsx):
   pass
 #%% data
-  print('read_excel')
-  data = pandas.read_excel(path)
+  print('read_excel', file=sys.stderr)
+  data = pandas.read_excel(input_xlsx)
 #%%
   # column 1
-  rri = data['R-R'].values
+  rri = data['RRI'].values
   # column 2
   time = data['Time'].values
   # column 3
@@ -37,6 +38,8 @@ def core(path):
   cbfr = data['CBF_r'].values
   interpolate = numpy.arange(start=0, stop=time[-1], step=0.5)
 
+#%%
+  print('interpolate', file=sys.stderr)
 #%% W3 xyinterp(W2,(col(W1,1)*1000),0.5)
   rr_at_2hz = numpy.interp(x=interpolate, xp=time, fp=rri * 1000)
   # matplotlib.pyplot.plot(interpolate, rr_at_2hz)
@@ -87,6 +90,8 @@ def core(path):
   # matplotlib.pyplot.plot(interpolate, vmean_percent_r_at_2hz)
   # matplotlib.pyplot.show()
 
+#%%
+  print('polynomial', file=sys.stderr)
 #%% W13 Polygraph(polyfit(W3,3,-1),xvals(W3))
   rr_3_polynomial = numpy.poly1d(numpy.polyfit(x=interpolate, y=rr_at_2hz, deg=3))
   # matplotlib.pyplot.plot(interpolate, rr_3_polynomial(interpolate))
@@ -137,6 +142,8 @@ def core(path):
   # matplotlib.pyplot.plot(interpolate, vmean_percent_r_3_polynomial(interpolate))
   # matplotlib.pyplot.show()
 
+#%%
+  print('psd', file=sys.stderr)
 #%% W23 W3-W13
   rr_detrended = rr_at_2hz - rr_3_polynomial(interpolate)
   # matplotlib.pyplot.plot(interpolate, rr_detrended)
@@ -187,6 +194,8 @@ def core(path):
   # matplotlib.pyplot.plot(interpolate, vmean_percent_r_detrended)
   # matplotlib.pyplot.show()
 
+#%%
+  print('psd', file=sys.stderr)
 #%% W33 extract(Wpsd(W23,256,128,256), 1,64)
   rr_psd = scipy.signal.welch(x=rr_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(rr_psd[0][0: 63], rr_psd[1][0: 63])
@@ -237,6 +246,8 @@ def core(path):
   # matplotlib.pyplot.plot(vmean_percent_r_psd[0], vmean_percent_r_psd[1])
   # matplotlib.pyplot.show()
 
+#%%
+  print('calculation', file=sys.stderr)
 #%% W43 extract(Wpxy(W25,W23,256,128,256), 1, 64)
   brs_cross_spectra = scipy.signal.csd(x=sbp_detrended, y=rr_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)
   # matplotlib.pyplot.plot(brs_cross_spectra[0][0: 63], brs_cross_spectra[1][0: 63])
@@ -346,7 +357,7 @@ def core(path):
   data_frame['r_coherence'] = r_dca_coherence[1][0: 63]
 
 
-  data_frame.to_excel(path.split('.')[0] + '_result.xlsx')
+  data_frame.to_excel(output_xlsx)
 
   # 0.05hz-0.1hz
 
