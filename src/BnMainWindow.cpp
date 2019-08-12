@@ -26,7 +26,8 @@ BnMainWindow::~BnMainWindow()
 }
 
 void BnMainWindow::on_actionOpen_triggered(){
-  QStringList inputs = QFileDialog::getOpenFileNames(this, tr("Select inputs"), QString(), tr("Excel (*.xlsx *.xls)"));
+  QStringList inputs = QFileDialog::getOpenFileNames(this, tr("Select inputs."), QString(), tr("Excel (*.xlsx *.xls)"));
+  // QString outputDir = QFileDialog::getExistingDirectory(this, tr('Select output directory.'));
   // QString program = "D:/Program Files/Git/bin/bash.exe";
   QString program = "tfa.exe";
   for(QString argv1: inputs) {
@@ -35,13 +36,13 @@ void BnMainWindow::on_actionOpen_triggered(){
     // process->setArguments(QStringList() << "test.sh" << argv1);
     qDebug() << argv1 << argv1.split('.')[0] + "_result.xlsx";
     process->setArguments(QStringList() << argv1 << argv1.split('.')[0] + "_result.xlsx");
-    process->start();
     connect(process, static_cast<void((QProcess::*)(int, QProcess::ExitStatus))>(&QProcess::finished), [process](int exitCode, QProcess::ExitStatus exitStatus) { 
       qDebug() << exitStatus;
       delete process;
     });
     connect(process, &QProcess::readyReadStandardOutput, [process]() { qDebug() << process->readLine(); });
-    connect(process, &QProcess::readyReadStandardError, [process]() { qWarning() << process->readLine(); });
+    connect(process, &QProcess::readyReadStandardError, [process]() { qDebug() << process->readLine(); });
+    process->start();
   }
 
 }

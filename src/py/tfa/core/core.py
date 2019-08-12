@@ -143,7 +143,7 @@ def core(input_xlsx, output_xlsx):
   # matplotlib.pyplot.show()
 
 #%%
-  print('psd', file=sys.stderr)
+  print('detrended', file=sys.stderr)
 #%% W23 W3-W13
   rr_detrended = rr_at_2hz - rr_3_polynomial(interpolate)
   # matplotlib.pyplot.plot(interpolate, rr_detrended)
@@ -197,74 +197,74 @@ def core(input_xlsx, output_xlsx):
 #%%
   print('psd', file=sys.stderr)
 #%% W33 extract(Wpsd(W23,256,128,256), 1,64)
-  rr_psd = scipy.signal.welch(x=rr_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
+  # rr_psd = scipy.signal.welch(x=rr_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(rr_psd[0][0: 63], rr_psd[1][0: 63])
   # matplotlib.pyplot.show()
 
 #%% W34 extract(Wpsd(W24,256,128,256), 1,64)
-  hr_psd = scipy.signal.welch(x=hr_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
+  # hr_psd = scipy.signal.welch(x=hr_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(hr_psd[0][0: 63], hr_psd[1][0: 63])
   # matplotlib.pyplot.show()
 
 #%% W35  extract(Wpsd(W25,256,128,256), 1,64)
-  sbp_psd = scipy.signal.welch(x=sbp_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
+  # sbp_psd = scipy.signal.welch(x=sbp_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(sbp_psd[0][0: 63], sbp_psd[1][0: 63])
   # matplotlib.pyplot.show()
 
 #%% W36 extract(Wpsd(W26,256,128,256), 1,64)
-  dbp_psd = scipy.signal.welch(x=dbp_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
+  # dbp_psd = scipy.signal.welch(x=dbp_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(dbp_psd[0][0: 63], dbp_psd[1][0: 63])
   # matplotlib.pyplot.show()
 
 #%% W37 extract(Wpsd(W27,256,128,256), 1,64)
-  map_psd = scipy.signal.welch(x=map_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
+  # map_psd = scipy.signal.welch(x=map_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(map_psd[0][0: 63], map_psd[1][0: 63])
   # matplotlib.pyplot.show()
   
 #%% W38 extract(Wpsd(W28,256,128,256), 1,64)
-  map_percent_psd = scipy.signal.welch(x=map_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
+  # map_percent_psd = scipy.signal.welch(x=map_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(map_percent_psd[0][0: 63], map_percent_psd[1][0: 63])
   # matplotlib.pyplot.show()
   
 #%% W39 extract(Wpsd(W29,256,128,256), 1,64)
-  vmean_l_psd = scipy.signal.welch(x=vmean_l_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
+  # vmean_l_psd = scipy.signal.welch(x=vmean_l_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(vmean_i_psd[0][0: 63], vmean_i_psd[1][0: 63])
   # matplotlib.pyplot.show()
 
 #%% W40 extract(Wpsd(W30,256,128,256), 1,64)
-  vmean_percent_i_psd = scipy.signal.welch(x=vmean_percent_l_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
+  # vmean_percent_i_psd = scipy.signal.welch(x=vmean_percent_l_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(vmean_percent_i_psd[0][0: 63], vmean_percent_i_psd[1][0: 63])
   # matplotlib.pyplot.show()
 
 #%% W41  extract(Wpsd(W31,256,128,256), 1,64)
-  vmean_r_psd = scipy.signal.welch(x=vmean_r_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
+  # vmean_r_psd = scipy.signal.welch(x=vmean_r_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(vmean_r_psd[0][0: 63], vmean_r_psd[1][0:63])
   # matplotlib.pyplot.show()
 
 #%% W42 extract(Wpsd(W32,256,128,256), 1,64)
-  vmean_percent_r_psd = scipy.signal.welch(x=vmean_percent_r_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
+  # vmean_percent_r_psd = scipy.signal.welch(x=vmean_percent_r_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(vmean_percent_r_psd[0], vmean_percent_r_psd[1])
   # matplotlib.pyplot.show()
 
 #%%
   print('calculation', file=sys.stderr)
 #%% W43 extract(Wpxy(W25,W23,256,128,256), 1, 64)
-  brs_cross_spectra = scipy.signal.csd(x=sbp_detrended, y=rr_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)
+  # brs_cross_spectra = scipy.signal.csd(x=sbp_detrended, y=rr_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)
   # matplotlib.pyplot.plot(brs_cross_spectra[0][0: 63], brs_cross_spectra[1][0: 63])
   # matplotlib.pyplot.show()
 
 #%% W44  mag(extract(Wtxy(W25,W23,256,128,256),1,64))
-  brs_gain = brs_cross_spectra[1] / scipy.signal.welch(x=sbp_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
+  # brs_gain = brs_cross_spectra[1] / scipy.signal.welch(x=sbp_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
   # matplotlib.pyplot.plot(rr_psd[0][0: 63], numpy.absolute(brs_gain[0: 63]))
   # matplotlib.pyplot.show()
 
 #%% W45 phase (W43)
-  brs_phase = [brs_cross_spectra[0], numpy.angle(brs_cross_spectra[1])]
+  # brs_phase = [brs_cross_spectra[0], numpy.angle(brs_cross_spectra[1])]
   # matplotlib.pyplot.plot(brs_phase[0][0: 63], brs_phase[1][0: 63])
   # matplotlib.pyplot.show()
 
 #%% W46 extract(Wcoh(W25,W23,256,128,256),1,64)
-  brs_coherence = scipy.signal.coherence(x=sbp_detrended, y=rr_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256)
+  # brs_coherence = scipy.signal.coherence(x=sbp_detrended, y=rr_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256)
   # matplotlib.pyplot.plot(brs_coherence[0][0: 63], brs_coherence[1][0: 63])
   # matplotlib.pyplot.show()
 
@@ -275,16 +275,19 @@ def core(input_xlsx, output_xlsx):
 
 #%% W48 mag(extract(Wtxy(W27,W29,256,128,256),1,64))
   l_dca_gain = l_dca_cross_spectra[1] / scipy.signal.welch(x=map_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
+  l_dca_gain = numpy.abs(l_dca_gain)
   # matplotlib.pyplot.plot(l_dca_cross_spectra[0][0: 63], numpy.absolute(l_dca_gain[0: 63]))
   # matplotlib.pyplot.show()
 
 #%% W49 mag(extract(Wtxy(W27,W30,256,128,256),1,64))
-  l_dca_gain_percent = scipy.signal.csd(x=map_detrended, y=vmean_percent_l_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1] / scipy.signal.welch(map_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
+  # l_dca_gain_percent = scipy.signal.csd(x=map_detrended, y=vmean_percent_l_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1] / scipy.signal.welch(map_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
+  # l_dca_gain_percent = numpy.abs(l_dca_gain_percent)
   # matplotlib.pyplot.plot(map_psd[0][0: 63], numpy.absolute(l_dca_gain_percent[0: 63]))
   # matplotlib.pyplot.show()
 
 #%% W50  mag(extract(Wtxy(W28,W30,256,128,256),1,64))
-  l_dca_gain_percent_percent = scipy.signal.csd(x=map_percent_detrended, y=vmean_percent_l_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]/scipy.signal.welch(map_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
+  # l_dca_gain_percent_percent = scipy.signal.csd(x=map_percent_detrended, y=vmean_percent_l_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]/scipy.signal.welch(map_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
+  # l_dca_gain_percent_percent = numpy.abs(l_dca_gain_percent_percent)
   # matplotlib.pyplot.plot(map_psd[0][0: 63], numpy.absolute(l_dca_gain_percent_percent[0: 63]))
   # matplotlib.pyplot.show()
 
@@ -305,16 +308,19 @@ def core(input_xlsx, output_xlsx):
 
 #%% W54  mag(extract(Wtxy(W27,W31,256,128,256),1,64))
   r_dca_gain = r_dca_cross_spectra[1] / scipy.signal.welch(x=map_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
+  r_dca_gain = numpy.abs(r_dca_gain)
   # matplotlib.pyplot.plot(map_psd[0][0: 63], numpy.absolute(r_dca_gain[0: 63]))
   # matplotlib.pyplot.show()
 
 #%% W55 mag(extract(Wtxy(W27,W32,256,128,256),1,64))
-  r_dca_gain_percent = scipy.signal.csd(x=map_detrended, y=vmean_percent_r_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1] / scipy.signal.welch(x=map_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
+  # r_dca_gain_percent = scipy.signal.csd(x=map_detrended, y=vmean_percent_r_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1] / scipy.signal.welch(x=map_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)[1]
+  # r_dca_gain_percent = numpy.abs(r_dca_gain_percent)
   # matplotlib.pyplot.plot(map_psd[0][0: 63], numpy.absolute(r_dca_gain_percent[0: 63]))
   # matplotlib.pyplot.show()
 
 #%% W56  mag(extract(Wtxy(W28,W32,256,128,256),1,64))
-  r_dca_gain_percent_percent = scipy.signal.csd(x=map_percent_detrended, y=vmean_percent_l_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=True)[1]/map_psd[1]
+  # r_dca_gain_percent_percent = scipy.signal.csd(x=map_percent_detrended, y=vmean_percent_l_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=True)[1]/map_psd[1]
+  # r_dca_gain_percent_percent = numpy.abs(r_dca_gain_percent_percent)
   # matplotlib.pyplot.plot(map_psd[0][0: 63], numpy.absolute(r_dca_gain_percent_percent[0: 63]))
   # matplotlib.pyplot.show()
 
@@ -348,11 +354,11 @@ def core(input_xlsx, output_xlsx):
   # data_frame['r_dca_gain_percent_percent'] = r_dca_gain_percent_percent[0: 63]
 
 
-  data_frame['F'] = brs_coherence[0][0: 63]
-  data_frame['l_gain'] = numpy.abs(l_dca_gain[0: 63])
+  data_frame['F'] = l_dca_coherence[0][0: 63]
+  data_frame['l_gain'] = l_dca_gain[0: 63]
   data_frame['l_phase'] = l_dca_phase[1][0: 63]
   data_frame['l_coherence'] = l_dca_coherence[1][0: 63]
-  data_frame['r_gain'] = numpy.abs(r_dca_gain[0: 63])
+  data_frame['r_gain'] = r_dca_gain[0: 63]
   data_frame['r_phase'] = r_dca_phase[1][0: 63]
   data_frame['r_coherence'] = r_dca_coherence[1][0: 63]
 

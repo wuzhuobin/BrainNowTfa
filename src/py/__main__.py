@@ -5,6 +5,7 @@ def main(input_xlsx, output_xlsx):
   pass
   print('main', file=sys.stderr)
   result = core(input_xlsx, output_xlsx)
+  print(result)
 
 
 if __name__ == '__main__':
