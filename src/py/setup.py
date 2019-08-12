@@ -10,7 +10,8 @@ setup(
     'pandas',
     'xlrd',
     'scipy',
-    'openpyxl'
+    'openpyxl',
+    'xlwt',
   ],
   entry_points = {
     'console_scripts': ['tfa=tfa.cli:main'],
