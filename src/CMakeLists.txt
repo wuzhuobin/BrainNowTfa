@@ -4,7 +4,7 @@ find_package(Qt5Widgets REQUIRED)
 
 set(CMAKE_AUTOMOC ON)
 
-# add_subdirectory(ExcelLib)
+add_subdirectory(ExcelLib)
 
 file(
   GLOB
@@ -40,7 +40,7 @@ qt5_add_resources(
   ${PROJECT_QRC}
 )
 
-# link_directories(${CMAKE_BINARY_DIR}/xlint-build/installed/lib)
+link_directories(${CMAKE_BINARY_DIR}/xlint-build/installed/lib)
 
 add_executable(
   ${PROJECT_NAME}
@@ -57,8 +57,8 @@ target_link_libraries(
   PUBLIC
   Qt5::Core
   Qt5::Widgets
-  # debug xlntd
-  # optimized xlnt
+  debug xlntd
+  optimized xlnt
 )
 
 target_include_directories(
@@ -66,5 +66,5 @@ target_include_directories(
   PUBLIC
   ${PROJECT_BINARY_DIR}
   ${PROJECT_SOURCE_DIR}
-  # ${CMAKE_BINARY_DIR}/xlint-build/installed/include
+  ${CMAKE_BINARY_DIR}/xlint-build/installed/include
 )

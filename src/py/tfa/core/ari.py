@@ -29,9 +29,12 @@ def app0(index, f):
     K = ARI[index][3]
     m = f * T
     n = 2 * D
-    B = 
+    B = np.array([m**2, 1+n*m-2*m**2-K, m**2-n**m])
+    A = B + np.array([0, K, 0])
+  return B, A
 #%%
-  print(t)
+  def ari(step, fs, L):
+    pass
 
 #%%
 
