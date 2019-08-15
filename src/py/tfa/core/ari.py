@@ -224,24 +224,28 @@ def firpara(u, y, nb, option):
   N = len(u)
   if option == 'u':
     pass
-    fai = np.zeros(N - nb + 1, nb)
-    for i in range(1, N - nb + 1):
+    fai = np.zeros((N, nb))
+    for i in range(0, N - nb):
       pass
-      fai[i, :] = u[(i + nb - 1): -1: i]
-    averfai = fai.T * fai
-    ny = y[nb: len(y) - 1]
-    B = averfaiy.inv() * averfaiy
-  else if option = 'b'
+      fai[i] = u[np.arange(i + nb - 1, i - 1, -1)]
+    averfai = fai.T @ fai
+    ny = y[np.arange(nb, len(y) - 1)]
+    averfaiy = fai.T @ ny.T
+    B = np.linalg.inv(averfai) @ averfaiy
+  elif option == 'b':
     pass
-    fai = np.zeros(N, nb)
-    u = np.array([zeros(1, nb - 1), u])
-    for i in range(1, N)
+    fai = np.zeros((N, nb))
+    u = np.concatenate([np.zeros((nb - 1)), u])
+    for i in range(0, N - 1):
       pass
-      fai[i, :] = u((i + nb - 1): -1: i)
-    averfai = fai.T * fai
-    averfaiy = fai.T * y.T
-    B = averfai.inv() * averfaiy
+      fai[i] = u[np.arange(i + nb - 1, i - 1, -1)]
+    averfai = fai.T @ fai
+    averfaiy = fai.T @ y.T
+    B = np.linalg.inv(averfai) @ averfaiy
   return B, fai
+# B, fai = firpara(seg_x, seg_d, L, 'b')
+# print(B)
+# print(fai)
 
 #%%
 def variance5(x, d, fs):
