@@ -371,21 +371,21 @@ def core(input_xlsx, output_xlsx):
   vlf = data_frame.query('F > 0.02 & F < 0.07').mean()
   lf = data_frame.query('F > 0.07 & F < 0.2').mean()
   hf = data_frame.query('F > 0.2 & F < 0.35').mean()
-  vlf_l = vlf.l_gain
-  vlf_r = vlf.r_gain
-  lf_l = lf.l_gain
-  lf_r = lf.r_gain
-  hf_l = hf.l_gain
-  hf_r = hf.r_gain
+  vlf_l = vlf.l_phase
+  vlf_r = vlf.r_phase
+  lf_l = lf.l_phase
+  lf_r = lf.r_phase
+  hf_l = hf.l_phase
+  hf_r = hf.r_phase
 
 #%%
-  means = data_frame.mean()
-  phase_infract = means.l_phase
-  gain_infract = means.l_gain
-  coherence_infract = means.l_coherence
-  phase_normal = means.r_phase
-  gain_normal = means.r_gain
-  coherence_normal = means.r_coherence
+  # means = data_frame.mean()
+  # phase_infract = means.l_phase
+  # gain_infract = means.l_gain
+  # coherence_infract = means.l_coherence
+  # phase_normal = means.r_phase
+  # gain_normal = means.r_gain
+  # coherence_normal = means.r_coherence
 
 #%%
   return (
@@ -395,10 +395,10 @@ def core(input_xlsx, output_xlsx):
     lf_r, 
     hf_l, 
     hf_r, 
-    phase_infract, 
-    gain_infract, 
-    coherence_infract,
-    phase_normal,
-    gain_normal,
-    coherence_normal
+    # phase_infract, 
+    # gain_infract, 
+    # coherence_infract,
+    # phase_normal,
+    # gain_normal,
+    # coherence_normal
   )
