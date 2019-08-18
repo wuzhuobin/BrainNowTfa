@@ -371,12 +371,6 @@ def core(input_xlsx, output_xlsx):
   vlf = data_frame.query('F > 0.02 & F < 0.07').mean()
   lf = data_frame.query('F > 0.07 & F < 0.2').mean()
   hf = data_frame.query('F > 0.2 & F < 0.35').mean()
-  vlf_l = vlf.l_phase
-  vlf_r = vlf.r_phase
-  lf_l = lf.l_phase
-  lf_r = lf.r_phase
-  hf_l = hf.l_phase
-  hf_r = hf.r_phase
 
 #%%
   # means = data_frame.mean()
@@ -389,16 +383,22 @@ def core(input_xlsx, output_xlsx):
 
 #%%
   return (
-    vlf_l, 
-    vlf_r, 
-    lf_l, 
-    lf_r, 
-    hf_l, 
-    hf_r, 
-    # phase_infract, 
-    # gain_infract, 
-    # coherence_infract,
-    # phase_normal,
-    # gain_normal,
-    # coherence_normal
+    vlf.l_gain,
+    vlf.l_phase,
+    vlf.l_coherence,
+    lf.l_gain,
+    lf.l_phase,
+    lf.l_coherence,
+    hf.l_gain,
+    hf.l_phase,
+    hf.r_coherence,
+    vlf.r_gain,
+    vlf.r_phase,
+    vlf.r_coherence,
+    lf.r_gain,
+    lf.r_phase,
+    lf.r_coherence,
+    hf.r_gain,
+    hf.r_phase,
+    hf.r_coherence,
   )

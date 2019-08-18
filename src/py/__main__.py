@@ -5,6 +5,7 @@ def main(input_xlsx, output_xlsx):
   pass
   print('main', file=sys.stderr)
   result = core(input_xlsx, output_xlsx)
+  # print(result)
   print(result[0])
   print(result[1])
   print(result[2])
@@ -17,6 +18,12 @@ def main(input_xlsx, output_xlsx):
   print(result[9])
   print(result[10])
   print(result[11])
+  print(result[12])
+  print(result[13])
+  print(result[14])
+  print(result[15])
+  print(result[16])
+  print(result[17])
 
 if __name__ == '__main__':
   main(sys.argv[1], sys.argv[2])

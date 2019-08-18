@@ -41,17 +41,56 @@ void BnMainWindow::on_actionExit_triggered() {
 void BnMainWindow::onReadyReadStandardOutput(int i) {
   QProcess *process = this->processes[i];
   QStringList outputs = QString(process->readAll()).split("\r\n");
-  xlnt::workbook wb;
-  wb.load(this->result.toStdString());
-  xlnt::worksheet ws = wb.active_sheet();
-  ws[xlnt::cell_reference(1, i + 2)].value(QFileInfo(this->inputs[i]).completeBaseName().toStdString());
-  for (std::size_t j = 0; j < outputs.size() - 1; ++j) {
-    ws[xlnt::cell_reference(j+2, i + 2)].value(outputs[j].toDouble());
+  xlnt::worksheet ws = this->wb->active_sheet();
+  // qDebug() << outputs;
+  // row headers
+  QString fileName = QFileInfo(this->inputs[i]).completeBaseName();
+  ws[xlnt::cell_reference(2 + i * 2, 1)].value(fileName.toStdString());
+  ws.merge_cells(xlnt::range_reference(2 + i * 2, 1, 3 + i * 2, 1));
+  ws[xlnt::cell_reference(2 + i * 2, 2)].value("L side");
+  ws[xlnt::cell_reference(3 + i * 2, 2)].value("R side");
+  std::size_t index = 0;
+  for(std::size_t row = 0; row < 12; ++row) {
+    // for(std::size_t col = 0; col < 2; ++col) {
+      if(row % 4 == 0) {
+        continue;
+      }
+      ws[xlnt::cell_reference(i * 2 + 2, row + 3)].value(outputs[index].toDouble());
+      ws[xlnt::cell_reference(i * 2 + 3, row + 3)].value(outputs[index + 9].toDouble());
+      index++;
+    // }
   }
-  wb.save(this->result.toStdString());
+}
+
+void BnMainWindow::onProcessFinished(int i) {
+  delete this->processes.take(i);
+  if(this->processes.isEmpty()) {
+    this->wb->save(this->result.toStdString());
+  }
 }
 
 void BnMainWindow::cal() {
+
+  this->wb = std::make_shared<xlnt::workbook>();
+  xlnt::worksheet &ws = this->wb->active_sheet();
+  QStringList rowHeader;
+  rowHeader << "VLF (0.02-0.07 Hz)"
+    << "Gain, %/mmHg"
+    << "Phase, radian"
+    << "Coherence"
+    << "LF (0.07-0.20 Hz)"
+    << "Gain, %/mmHg"
+    << "Phase, radian"
+    << "Coherence"
+    << "HF (0.20-0.35 Hz)"
+    << "Gain, %/mmHg"
+    << "Phase, radian"
+    << "Coherence";
+  for(std::size_t i = 0; i < rowHeader.size(); ++i) {
+    ws[xlnt::cell_reference(1, i + 3)].value(rowHeader[i].toStdString());
+  }
+  // wb.save("result.xlsx");
+
   this->inputs = QFileDialog::getOpenFileNames(this, tr("Select inputs."), QString(), tr("Excel (*.xlsx *.xls)"));
   if(this->inputs.isEmpty()) {
     return;
@@ -65,32 +104,9 @@ void BnMainWindow::cal() {
     this->outputs << outputDir + '/' + QFileInfo(s).completeBaseName() + "_result.xlsx";
   }
   this->result = outputDir + '/' + RESULT;
-  xlnt::workbook wb;
-  xlnt::worksheet ws = wb.active_sheet();
-  ws.title("result");
-  QStringList header;
-  header << "Name"
-    << "Phase-L(VLF)"
-    << "Phase-R(VLF)"
-    << "Phase-L(LF)"
-    << "Phase-R(LF)"
-    << "Phase-L(HF)"
-    << "Phase-R(HF)"
-    << "Phase infract"
-    << "Gain infract"
-    << "Coherence infract"
-    // << "ARI infract"
-    << "Phase normal"
-    << "Gain normal"
-    << "Coherence normal"
-    // << "ARI normal"
-    ;
-  for(size_t i = 0; i < header.size(); ++i) {
-    ws[xlnt::cell_reference(i+1, 1)].value(header[i].toStdString());
-  }
-  wb.save(this->result.toStdString());
 
-  // QString program = "D:/Program Files/Git/bin/bash.exe";
+  // // QString program = "D:/Program Files/Git/bin/bash.exe";
+  this->processes.clear();
   for(size_t i = 0; i < this->inputs.size(); ++i) {
     QProcess *process = new QProcess(this);
     process->setProgram(PROGRAM);
@@ -101,11 +117,11 @@ void BnMainWindow::cal() {
     process->setArguments(QStringList() << argv1 << argv2);
     connect(process, static_cast<void((QProcess::*)(int, QProcess::ExitStatus))>(&QProcess::finished), [=](int exitCode, QProcess::ExitStatus exitStatus) { 
       qDebug() << exitStatus;
-      // delete this->processes.takeAt(i);
+      this->onProcessFinished(i);
     });
     connect(process, &QProcess::readyReadStandardOutput, [=]() { this->onReadyReadStandardOutput(i); });
     connect(process, &QProcess::readyReadStandardError, [=]() { qDebug() << process->readAll(); });
     process->start();
-    this->processes.push_back(process);
+    this->processes[i] = process;
   }
 }
