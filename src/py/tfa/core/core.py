@@ -391,7 +391,7 @@ def core(input_xlsx, output_xlsx):
     lf.l_coherence,
     hf.l_gain,
     hf.l_phase,
-    hf.r_coherence,
+    hf.l_coherence,
     vlf.r_gain,
     vlf.r_phase,
     vlf.r_coherence,

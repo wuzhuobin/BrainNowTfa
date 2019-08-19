@@ -8,6 +8,10 @@
 ## v0.1a
    Date: Aug.18.2019
 
+## v0.2a
+   Date Aug.20.2019
+   Bug fixed: l_coherence equaled to r_coherence.
+
 ## How to use
 1. Install vcredist_msvc2015_x64.exe/vcredist_msvc2015_x86.exe.
 2. Run BrainNowTfa.exe.
