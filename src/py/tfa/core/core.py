@@ -4,7 +4,7 @@ import pandas
 import numpy
 import scipy.signal
 import sys
-# import matplotlib.pyplot;
+from matplotlib import pyplot;
 #%% path
 input_xlsx = 'patient orinigal data.xlsx'
 
@@ -361,11 +361,65 @@ def core(input_xlsx, output_xlsx):
   data_frame['r_gain'] = r_dca_gain[0: 63]
   data_frame['r_phase'] = r_dca_phase[1][0: 63]
   data_frame['r_coherence'] = r_dca_coherence[1][0: 63]
-
-
+  
+#%% save to excel
   data_frame.to_excel(output_xlsx)
+#%%
+  fig = pyplot.figure(figsize=[8.27, 11.69])
+  pyplot.subplots_adjust(wspace=0.2, hspace=0.3)
+  pyplot.subplot(3, 2, 1)
+  pyplot.plot(data_frame.F, data_frame.l_gain)
+  pyplot.title('l_gain')
+  pyplot.subplot(3, 2, 2)
+  pyplot.plot(data_frame.F, data_frame.l_phase)
+  pyplot.title('l_phase')
+  pyplot.subplot(3, 2, 3)
+  pyplot.plot(data_frame.F, data_frame.l_coherence)
+  pyplot.title('l_coherence')
+  pyplot.subplot(3, 2, 4)
+  pyplot.plot(data_frame.F, data_frame.r_gain)
+  pyplot.title('r_gain')
+  pyplot.subplot(3, 2, 5)
+  pyplot.plot(data_frame.F, data_frame.r_phase)
+  pyplot.title('r_phase')
+  pyplot.subplot(3, 2, 6)
+  pyplot.plot(data_frame.F, data_frame.r_coherence)
+  pyplot.title('r_coherence')
+  fig.savefig(output_xlsx + '.png')
+  
 
-  # 0.05hz-0.1hz
+#%% save to figure
+  # pyplot.ion()
+  fig = pyplot.figure()
+  pyplot.plot(data_frame.F, data_frame.l_gain)
+  pyplot.title('l_gain')
+  fig.savefig(output_xlsx + '.l_gain.png')
+  # pyplot.show()
+  fig = pyplot.figure()
+  pyplot.plot(data_frame.F, data_frame.l_phase)
+  pyplot.title('l_phase')
+  fig.savefig(output_xlsx + '.l_phase.png')
+  # pyplot.show()
+  fig = pyplot.figure()
+  pyplot.plot(data_frame.F, data_frame.l_coherence)
+  pyplot.title('l_coherence')
+  fig.savefig(output_xlsx + '.l_coherence.png')
+  # pyplot.show()
+  fig = pyplot.figure()
+  pyplot.plot(data_frame.F, data_frame.r_gain)
+  pyplot.title('r_gain')
+  fig.savefig(output_xlsx + '.r_gain.png')
+  # pyplot.show()
+  fig = pyplot.figure()
+  pyplot.plot(data_frame.F, data_frame.r_phase)
+  pyplot.title('r_phase')
+  fig.savefig(output_xlsx + 'r_phase.png')
+  # pyplot.show()
+  fig = pyplot.figure()
+  pyplot.plot(data_frame.F, data_frame.r_coherence)
+  pyplot.title('r_coherence')
+  fig.savefig(output_xlsx + 'r_coherence.png')
+  # pyplot.show()
 
 #%%
   vlf = data_frame.query('F > 0.02 & F < 0.07').mean()
