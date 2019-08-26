@@ -434,9 +434,7 @@ def core(input_xlsx, output_xlsx):
   # phase_normal = means.r_phase
   # gain_normal = means.r_gain
   # coherence_normal = means.r_coherence
-
-#%%
-  return (
+  means = (
     vlf.l_gain,
     vlf.l_phase,
     vlf.l_coherence,
@@ -456,3 +454,15 @@ def core(input_xlsx, output_xlsx):
     hf.r_phase,
     hf.r_coherence,
   )
+  data_frame_list = (
+    data_frame.F.to_list(), 
+    data_frame.l_gain.to_list(),
+    data_frame.l_phase.to_list(),
+    data_frame.l_coherence.to_list(),
+    data_frame.r_gain.to_list(),
+    data_frame.r_phase.to_list(),
+    data_frame.r_coherence.to_list(),
+  )
+
+#%%
+  return means, data_frame_list
