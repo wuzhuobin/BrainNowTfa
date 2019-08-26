@@ -20,6 +20,9 @@ private Q_SLOTS:
   void onProcessFinished(int i);
 private:
   void cal();
+  void groupSummary();
+  void vlf_lf_hf();
+  void l_r_gain_phase_coherence();
   Ui::BnMainWindow *ui;
   std::shared_ptr<xlnt::workbook> wb;
   QHash<std::size_t, QProcess*> processes;

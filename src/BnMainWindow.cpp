@@ -41,25 +41,28 @@ void BnMainWindow::on_actionExit_triggered() {
 void BnMainWindow::onReadyReadStandardOutput(int i) {
   QProcess *process = this->processes[i];
   QStringList outputs = QString(process->readAll()).split("\r\n");
-  xlnt::worksheet ws = this->wb->active_sheet();
-  // qDebug() << outputs;
-  // row headers
-  QString fileName = QFileInfo(this->inputs[i]).completeBaseName();
-  ws[xlnt::cell_reference(2 + i * 2, 1)].value(fileName.toStdString());
-  ws.merge_cells(xlnt::range_reference(2 + i * 2, 1, 3 + i * 2, 1));
-  ws[xlnt::cell_reference(2 + i * 2, 2)].value("L side");
-  ws[xlnt::cell_reference(3 + i * 2, 2)].value("R side");
-  std::size_t index = 0;
-  for(std::size_t row = 0; row < 12; ++row) {
-    // for(std::size_t col = 0; col < 2; ++col) {
-      if(row % 4 == 0) {
-        continue;
-      }
-      ws[xlnt::cell_reference(i * 2 + 2, row + 3)].value(outputs[index].toDouble());
-      ws[xlnt::cell_reference(i * 2 + 3, row + 3)].value(outputs[index + 9].toDouble());
-      index++;
-    // }
+  for(std::size_t i = 0; i < outputs.size(); ++i) {
+    outputs[i] = outputs[i].remove(QRegularExpression("[\\[\\](),]"));
   }
+  // xlnt::worksheet ws = this->wb->active_sheet();
+  // // qDebug() << outputs;
+  // // row headers
+  // QString fileName = QFileInfo(this->inputs[i]).completeBaseName();
+  // ws[xlnt::cell_reference(2 + i * 2, 1)].value(fileName.toStdString());
+  // ws.merge_cells(xlnt::range_reference(2 + i * 2, 1, 3 + i * 2, 1));
+  // ws[xlnt::cell_reference(2 + i * 2, 2)].value("L side");
+  // ws[xlnt::cell_reference(3 + i * 2, 2)].value("R side");
+  // std::size_t index = 0;
+  // for(std::size_t row = 0; row < 12; ++row) {
+  //   // for(std::size_t col = 0; col < 2; ++col) {
+  //     if(row % 4 == 0) {
+  //       continue;
+  //     }
+  //     ws[xlnt::cell_reference(i * 2 + 2, row + 3)].value(outputs[index].toDouble());
+  //     ws[xlnt::cell_reference(i * 2 + 3, row + 3)].value(outputs[index + 9].toDouble());
+  //     index++;
+  //   // }
+  // }
 }
 
 void BnMainWindow::onProcessFinished(int i) {
@@ -120,8 +123,20 @@ void BnMainWindow::cal() {
       this->onProcessFinished(i);
     });
     connect(process, &QProcess::readyReadStandardOutput, [=]() { this->onReadyReadStandardOutput(i); });
-    connect(process, &QProcess::readyReadStandardError, [=]() { qDebug() << process->readAll(); });
+    connect(process, &QProcess::readyReadStandardError, [=]() { qDebug() << process->readAllStandardError(); });
     process->start();
     this->processes[i] = process;
   }
+}
+
+void BnMainWindow::groupSummary() {
+
+}
+
+void BnMainWindow::vlf_lf_hf() {
+
+}
+
+void BnMainWindow::l_r_gain_phase_coherence() {
+
 }
