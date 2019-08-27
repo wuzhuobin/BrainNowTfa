@@ -21,8 +21,10 @@ private Q_SLOTS:
 private:
   void cal();
   void groupSummary();
-  void vlf_lf_hf();
-  void l_r_gain_phase_coherence();
+  void vlf_lf_hf(int i, QString means);
+  void l_r_gain_phase_coherence(int i, QString l_gain, QString l_phase, QString l_coherence, QString r_gain, QString r_phase, QString r_coherence);
+  void l_r_gain_phase_coherence(int i, QStringList values);
+  void l_r_gain_phase_coherence_average();
   Ui::BnMainWindow *ui;
   std::shared_ptr<xlnt::workbook> wb;
   QHash<std::size_t, QProcess*> processes;
