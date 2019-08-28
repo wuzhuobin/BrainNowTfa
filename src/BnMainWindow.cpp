@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QProcess>
 #include <QFileInfo>
+#include <QProgressDialog>
 // xlnt
 #include <xlnt/xlnt.hpp>
 //
@@ -55,6 +56,7 @@ BnMainWindow::BnMainWindow(QWidget * parent) :
 {
   this->ui = new Ui::BnMainWindow;
   this->ui->setupUi(this);
+  this->progressDialog = nullptr;
 }
 
 BnMainWindow::~BnMainWindow() 
@@ -98,6 +100,7 @@ void BnMainWindow::onReadyReadStandardOutput(int i) {
 
 void BnMainWindow::onProcessFinished(int i) {
   delete this->processes.take(i);
+  this->progressDialog->setValue(this->inputs.size() - this->processes.size());
   if(this->processes.isEmpty()) {
     this->l_r_gain_phase_coherence_average();
     this->vlf_lf_hf_average();
@@ -164,6 +167,16 @@ void BnMainWindow::cal() {
     process->start();
     this->processes[i] = process;
   }
+  if(this->progressDialog != nullptr) {
+    delete this->progressDialog;
+  }
+  this->progressDialog = new QProgressDialog(this, Qt::Dialog | Qt::CustomizeWindowHint);
+  this->progressDialog->setRange(0, this->inputs.size());
+  this->progressDialog->setAutoClose(true);
+  this->progressDialog->setAutoReset(true);
+  this->progressDialog->setCancelButton(nullptr);
+  // this->progressDialog->show();
+  this->progressDialog->exec();
 }
 
 void BnMainWindow::groupSummary() {

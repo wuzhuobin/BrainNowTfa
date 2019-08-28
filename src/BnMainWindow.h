@@ -5,6 +5,7 @@
 namespace Ui{ class BnMainWindow;}
 namespace xlnt{class workbook;}
 class QProcess;
+class QProgressDialog;
 
 class BnMainWindow: public QMainWindow
 {
@@ -27,6 +28,7 @@ private:
   void l_r_gain_phase_coherence(int i, QStringList values);
   void l_r_gain_phase_coherence_average();
   Ui::BnMainWindow *ui;
+  QProgressDialog *progressDialog;
   std::shared_ptr<xlnt::workbook> wb;
   QHash<std::size_t, QProcess*> processes;
   QStringList inputs;
