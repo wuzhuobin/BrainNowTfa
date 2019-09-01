@@ -5,6 +5,7 @@
 #include <QProcess>
 #include <QFileInfo>
 #include <QProgressDialog>
+#include <QThread>
 // xlnt
 #include <xlnt/xlnt.hpp>
 //
@@ -91,6 +92,7 @@ void BnMainWindow::onReadyReadStandardOutput(int i) {
   this->vlf_lf_hf(i, dataList[0]);
   this->l_r_gain_phase_coherence(i, dataList[2], dataList[3], dataList[4], dataList[5], dataList[6], dataList[7]);
   if(i == 0) {
+    this->frequency.clear();
     QStringList frequencies = dataList[1].split(' ');
     for(auto cit = frequencies.cbegin(); cit != frequencies.cend(); ++cit) {
       this->frequency << cit->toDouble();
@@ -106,6 +108,11 @@ void BnMainWindow::onProcessFinished(int i) {
     this->vlf_lf_hf_average();
     this->groupSummary();
     this->wb->save(this->result.toStdString());
+    QProcess process(this);
+    process.setProgram(PROGRAM);
+    process.setArguments(QStringList() << "-s" << this->result << this->result + ".png" );
+    process.start();
+    process.waitForFinished();
   }
 }
 
@@ -157,7 +164,7 @@ void BnMainWindow::cal() {
     QString argv2 = this->outputs[i];
      // process->setArguments(QStringList() << "test.sh" << argv1);
     // qDebug() << argv1 << argv2;
-    process->setArguments(QStringList() << argv1 << argv2);
+    process->setArguments(QStringList() << "-c" << argv1 << argv2);
     connect(process, static_cast<void((QProcess::*)(int, QProcess::ExitStatus))>(&QProcess::finished), [=](int exitCode, QProcess::ExitStatus exitStatus) { 
       qDebug() << exitStatus;
       this->onProcessFinished(i);

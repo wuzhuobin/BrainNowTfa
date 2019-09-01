@@ -1,11 +1,31 @@
-from tfa import core
+import tfa
 import sys
+import argparse
 
-def main(input_xlsx, output_xlsx):
+def core(input_xlsx, output_xlsx):
+  pass
+  print('core', file=sys.stderr)
+  result = tfa.core(input_xlsx, output_xlsx)
+  print(result[0])
+  print(result[1][0])
+  print(result[1][1])
+  print(result[1][2])
+  print(result[1][3])
+  print(result[1][4])
+  print(result[1][5])
+  print(result[1][6])
+
+def main():
   pass
   print('main', file=sys.stderr)
-  result = core(input_xlsx, output_xlsx)
-
-
-if __name__ == '__main__':
-  main(sys.argv[1], sys.argv[2])
+  parser = argparse.ArgumentParser(description='Brain Now TFA program.')
+  parser.add_argument('-c', '--core', nargs=2)
+  parser.add_argument('-s', '--summary', nargs=2)
+  args = parser.parse_args()
+  if isinstance(args.core, list) and len(args.core) == 2:
+    pass
+    core(args.core[0], args.core[1])
+  elif isinstance(args.summary, list) and len(args.summary) == 2:
+    pass
+  else:
+    parser.print_help()
