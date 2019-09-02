@@ -16,6 +16,11 @@
   Date Aug.28.2019
   Output png plots, new result format and progressbar.
 
+## v0.4a
+  1. ***.result.xlsx.png plot sequences
+  2. summary plot
+  3. drop nan value in pandas
+
 ## How to use
 1. Install vcredist_msvc2015_x64.exe/vcredist_msvc2015_x86.exe.
 2. Run BrainNowTfa.exe.
