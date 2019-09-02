@@ -7,12 +7,14 @@ import sys
 from matplotlib import pyplot;
 #%% path
 input_xlsx = 'patient orinigal data.xlsx'
+# input_xlsx = '1_e8532773_chung_39.xls'
 
 def core(input_xlsx, output_xlsx):
   pass
 #%% data
   print('read_excel', file=sys.stderr)
   data = pandas.read_excel(input_xlsx)
+  data = data.dropna()
 #%%
   # column 1
   rri = data['RRI'].values
