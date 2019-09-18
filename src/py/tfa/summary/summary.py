@@ -2,12 +2,17 @@
 import pandas as pd
 from matplotlib import pyplot
 
-input_xlsx = 'result.xlsx'
+input_xlsxs = ['test data output.xlsx']
 output = 'result.xlsx.png'
 
 #%%
-def summary(input_xlsx, output):
+def summary(input_xlsxs, output):
   pass
+#%%
+  for input_xlsx in input_xlsxs:
+    pass
+    data_frame = pd.read_excel(input_xlsx)
+    print(data_frame)
 #%%
   data_frame = pd.read_excel(input_xlsx)
   fig = pyplot.figure(figsize=[8.27, 11.69])
