@@ -23,7 +23,7 @@ def summary(input_xlsxs, output):
     'r_coherence': pd.DataFrame(),
   }
   # column_header are generated from input filenames.
-  filename_prefix = list(map(lambda fileName: path.splitext(fileName)[0], input_xlsxs))
+  filename_prefix = list(map(lambda fileName: path.splitext(path.basename(fileName))[0], input_xlsxs))
   for i in range(len(work_sheets)):
     pass
     key = list(work_sheets.keys())[i]
@@ -91,9 +91,9 @@ def summary(input_xlsxs, output):
         ws_vlf_lf_hf.cell(row=i + 9, column=j * 2 + 3, value=hf[filename_prefix[j]])
         pass
   
-  ws_vlf_lf_hf.cell(row=1, column=len(filename_prefix) + 3, value='Average')
-  ws_vlf_lf_hf.cell(row=2, column=len(filename_prefix) + 3, value='L side')
-  ws_vlf_lf_hf.cell(row=2, column=len(filename_prefix) + 4, value='R side')
+  ws_vlf_lf_hf.cell(row=1, column=len(filename_prefix) * 2 + 2, value='Average')
+  ws_vlf_lf_hf.cell(row=2, column=len(filename_prefix) * 2 + 2, value='L side')
+  ws_vlf_lf_hf.cell(row=2, column=len(filename_prefix) * 2 + 3, value='R side')
   vlf_lf_hf_average = vlf_lf_hf.drop(['F', 'Average']).mean()
 
   for i in range(len(work_sheets)):
@@ -101,14 +101,14 @@ def summary(input_xlsxs, output):
     key = list(work_sheets.keys())[i]
     if i < 3:
       pass
-      ws_vlf_lf_hf.cell(row=i + 4, column=len(filename_prefix) + 3, value=vlf_lf_hf_average[key + '_vlf'])
-      ws_vlf_lf_hf.cell(row=i + 8, column=len(filename_prefix) + 3, value=vlf_lf_hf_average[key + '_lf'])
-      ws_vlf_lf_hf.cell(row=i + 12, column=len(filename_prefix) + 3, value=vlf_lf_hf_average[key + '_hf'])
+      ws_vlf_lf_hf.cell(row=i + 4, column=len(filename_prefix) * 2 + 2, value=vlf_lf_hf_average[key + '_vlf'])
+      ws_vlf_lf_hf.cell(row=i + 8, column=len(filename_prefix) * 2 + 2, value=vlf_lf_hf_average[key + '_lf'])
+      ws_vlf_lf_hf.cell(row=i + 12, column=len(filename_prefix) * 2 + 2, value=vlf_lf_hf_average[key + '_hf'])
     else:
       pass
-      ws_vlf_lf_hf.cell(row=i + 1, column=len(filename_prefix) + 4, value=vlf_lf_hf_average[key + '_vlf'])
-      ws_vlf_lf_hf.cell(row=i + 5, column=len(filename_prefix) + 4, value=vlf_lf_hf_average[key + '_lf'])
-      ws_vlf_lf_hf.cell(row=i + 9, column=len(filename_prefix) + 4, value=vlf_lf_hf_average[key + '_hf'])
+      ws_vlf_lf_hf.cell(row=i + 1, column=len(filename_prefix) * 2 + 3, value=vlf_lf_hf_average[key + '_vlf'])
+      ws_vlf_lf_hf.cell(row=i + 5, column=len(filename_prefix) * 2 + 3, value=vlf_lf_hf_average[key + '_lf'])
+      ws_vlf_lf_hf.cell(row=i + 9, column=len(filename_prefix) * 2 + 3, value=vlf_lf_hf_average[key + '_hf'])
 
   ws_group_summary = wb['Group summary']
   ws_group_summary['J1'] = 'L side'
@@ -150,3 +150,24 @@ def summary(input_xlsxs, output):
   wb.save(filename=output)
 
 #%%
+  fig = pyplot.figure(figsize=[8.27, 11.69])
+  pyplot.subplots_adjust(wspace=0.2, hspace=0.3)
+  pyplot.subplot(3, 2, 1)
+  pyplot.plot(group_summary.F, group_summary.l_gain)
+  pyplot.title('l_gain')
+  pyplot.subplot(3, 2, 3)
+  pyplot.plot(group_summary.F, group_summary.l_phase)
+  pyplot.title('l_phase')
+  pyplot.subplot(3, 2, 5)
+  pyplot.plot(group_summary.F, group_summary.l_coherence)
+  pyplot.title('l_coherence')
+  pyplot.subplot(3, 2, 2)
+  pyplot.plot(group_summary.F, group_summary.r_gain)
+  pyplot.title('r_gain')
+  pyplot.subplot(3, 2, 4)
+  pyplot.plot(group_summary.F, group_summary.r_phase)
+  pyplot.title('r_phase')
+  pyplot.subplot(3, 2, 6)
+  pyplot.plot(group_summary.F, group_summary.r_coherence)
+  pyplot.title('r_coherence')
+  fig.savefig(output + '.png')

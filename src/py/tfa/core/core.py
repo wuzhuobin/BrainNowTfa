@@ -12,7 +12,7 @@ input_xlsx = 'patient orinigal data.xlsx'
 def core(input_xlsx, output_xlsx):
   pass
 #%% data
-  print('read_excel', file=sys.stderr)
+  # print('read_excel', file=sys.stderr)
   data = pandas.read_excel(input_xlsx)
   data = data.dropna()
 #%%
@@ -41,7 +41,7 @@ def core(input_xlsx, output_xlsx):
   interpolate = numpy.arange(start=0, stop=time[-1], step=0.5)
 
 #%%
-  print('interpolate', file=sys.stderr)
+  # print('interpolate', file=sys.stderr)
 #%% W3 xyinterp(W2,(col(W1,1)*1000),0.5)
   rr_at_2hz = numpy.interp(x=interpolate, xp=time, fp=rri * 1000)
   # matplotlib.pyplot.plot(interpolate, rr_at_2hz)
@@ -93,7 +93,7 @@ def core(input_xlsx, output_xlsx):
   # matplotlib.pyplot.show()
 
 #%%
-  print('polynomial', file=sys.stderr)
+  # print('polynomial', file=sys.stderr)
 #%% W13 Polygraph(polyfit(W3,3,-1),xvals(W3))
   rr_3_polynomial = numpy.poly1d(numpy.polyfit(x=interpolate, y=rr_at_2hz, deg=3))
   # matplotlib.pyplot.plot(interpolate, rr_3_polynomial(interpolate))
@@ -145,7 +145,7 @@ def core(input_xlsx, output_xlsx):
   # matplotlib.pyplot.show()
 
 #%%
-  print('detrended', file=sys.stderr)
+  # print('detrended', file=sys.stderr)
 #%% W23 W3-W13
   rr_detrended = rr_at_2hz - rr_3_polynomial(interpolate)
   # matplotlib.pyplot.plot(interpolate, rr_detrended)
@@ -197,7 +197,7 @@ def core(input_xlsx, output_xlsx):
   # matplotlib.pyplot.show()
 
 #%%
-  print('psd', file=sys.stderr)
+  # print('psd', file=sys.stderr)
 #%% W33 extract(Wpsd(W23,256,128,256), 1,64)
   # rr_psd = scipy.signal.welch(x=rr_detrended, nperseg=256, noverlap=128, nfft=256, fs=2, window='hann', return_onesided=True)
   # matplotlib.pyplot.plot(rr_psd[0][0: 63], rr_psd[1][0: 63])
@@ -249,7 +249,7 @@ def core(input_xlsx, output_xlsx):
   # matplotlib.pyplot.show()
 
 #%%
-  print('calculation', file=sys.stderr)
+  # print('calculation', file=sys.stderr)
 #%% W43 extract(Wpxy(W25,W23,256,128,256), 1, 64)
   # brs_cross_spectra = scipy.signal.csd(x=sbp_detrended, y=rr_detrended, fs=2, window='hann', nperseg=256, noverlap=128, nfft=256, return_onesided=False)
   # matplotlib.pyplot.plot(brs_cross_spectra[0][0: 63], brs_cross_spectra[1][0: 63])
@@ -424,47 +424,3 @@ def core(input_xlsx, output_xlsx):
   # pyplot.show()
 
 #%%
-  vlf = data_frame.query('F > 0.02 & F < 0.07').mean()
-  lf = data_frame.query('F > 0.07 & F < 0.2').mean()
-  hf = data_frame.query('F > 0.2 & F < 0.35').mean()
-
-#%%
-  # means = data_frame.mean()
-  # phase_infract = means.l_phase
-  # gain_infract = means.l_gain
-  # coherence_infract = means.l_coherence
-  # phase_normal = means.r_phase
-  # gain_normal = means.r_gain
-  # coherence_normal = means.r_coherence
-  means = (
-    vlf.l_gain,
-    vlf.l_phase,
-    vlf.l_coherence,
-    lf.l_gain,
-    lf.l_phase,
-    lf.l_coherence,
-    hf.l_gain,
-    hf.l_phase,
-    hf.l_coherence,
-    vlf.r_gain,
-    vlf.r_phase,
-    vlf.r_coherence,
-    lf.r_gain,
-    lf.r_phase,
-    lf.r_coherence,
-    hf.r_gain,
-    hf.r_phase,
-    hf.r_coherence,
-  )
-  data_frame_list = (
-    data_frame.F.to_list(), 
-    data_frame.l_gain.to_list(),
-    data_frame.l_phase.to_list(),
-    data_frame.l_coherence.to_list(),
-    data_frame.r_gain.to_list(),
-    data_frame.r_phase.to_list(),
-    data_frame.r_coherence.to_list(),
-  )
-
-#%%
-  return means, data_frame_list
