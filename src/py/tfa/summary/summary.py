@@ -86,10 +86,40 @@ def summary(input_xlsxs, output):
         ws_vlf_lf_hf.cell(row=i + 8, column=j * 2 + 2, value=lf[filename_prefix[j]])
         ws_vlf_lf_hf.cell(row=i + 12, column=j * 2 + 2, value=hf[filename_prefix[j]])
       else:
+        pass
         ws_vlf_lf_hf.cell(row=i + 1, column=j * 2 + 3, value=vlf[filename_prefix[j]])
         ws_vlf_lf_hf.cell(row=i + 5, column=j * 2 + 3, value=lf[filename_prefix[j]])
         ws_vlf_lf_hf.cell(row=i + 9, column=j * 2 + 3, value=hf[filename_prefix[j]])
+      # Adding summary to input_xlsxs.
+      wb_input_xlsxs = xl.load_workbook(filename=input_xlsxs[j])
+      ws_input_xlsxs = wb_input_xlsxs.active
+      ws_input_xlsxs['K1'] = 'L side'
+      ws_input_xlsxs['L1'] = 'R side'
+      ws_input_xlsxs['J2'] = 'VLF (0.02-0.07 Hz)'
+      ws_input_xlsxs['J3'] = 'Gain, %/mmHg'
+      ws_input_xlsxs['J4'] = 'Phase, radian'
+      ws_input_xlsxs['J5'] = 'Coherence'
+      ws_input_xlsxs['J6'] = 'LF (0.07-0.20 Hz)'
+      ws_input_xlsxs['J7'] = 'Gain, %/mmHg'
+      ws_input_xlsxs['J8'] = 'Phase, radian'
+      ws_input_xlsxs['J9'] = 'Coherence'
+      ws_input_xlsxs['J10'] = 'HF (0.20-0.35 Hz)'
+      ws_input_xlsxs['J11'] = 'Gain, %/mmHg'
+      ws_input_xlsxs['J12'] = 'Phase, radian'
+      ws_input_xlsxs['J13'] = 'Coherence'
+      if i < 3:
         pass
+        ws_input_xlsxs.cell(row=i + 3, column=11, value=vlf[filename_prefix[j]])
+        ws_input_xlsxs.cell(row=i + 7, column=11, value=lf[filename_prefix[j]])
+        ws_input_xlsxs.cell(row=i + 11, column=11, value=hf[filename_prefix[j]])
+      else:
+        ws_input_xlsxs.cell(row=i + 0, column=12, value=vlf[filename_prefix[j]])
+        ws_input_xlsxs.cell(row=i + 4, column=12, value=lf[filename_prefix[j]])
+        ws_input_xlsxs.cell(row=i + 8, column=12, value=hf[filename_prefix[j]])
+        pass
+      wb_input_xlsxs.save(input_xlsxs[j])
+
+
   
   ws_vlf_lf_hf.cell(row=1, column=len(filename_prefix) * 2 + 2, value='Average')
   ws_vlf_lf_hf.cell(row=2, column=len(filename_prefix) * 2 + 2, value='L side')
