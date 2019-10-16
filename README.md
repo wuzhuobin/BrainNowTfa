@@ -21,6 +21,11 @@
   2. summary plot
   3. drop nan value in pandas
 
+## v0.5a
+  1. Using openpyxl in python instead of xlnt in cpp
+  2. Removing unnecessary dependencies
+  3. Every data result excel was added with hf, lf, vlf.
+
 ## How to use
 1. Install vcredist_msvc2015_x64.exe/vcredist_msvc2015_x86.exe.
 2. Run BrainNowTfa.exe.
