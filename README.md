@@ -4,6 +4,7 @@
 * Since: Aug.18.2019
 * Email: jiejin2022@163.com
 * Copyright: &copy;WUZHUOBIN ALL RIGHTS RESERVED
+[![Build Status](https://travis-ci.org/wuzhuobin/BrainNowTfa.svg?branch=master)](https://travis-ci.org/wuzhuobin/BrainNowTfa)
 
 ## v0.1a
    Date: Aug.18.2019
