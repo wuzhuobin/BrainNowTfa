@@ -1,0 +1,54 @@
+stages: CI
+matrix:
+  include:
+    - stage: CI
+      name: "win10 msvc2017_64  qt5.12.5 miniconda-latest"
+      language: bash
+      os: windows
+      services:
+        - docker
+      before_install:
+        - wget -nv https://download.qt.io/archive/qt/5.12/5.12.5/qt-opensource-windows-x86-5.12.5.exe
+        - wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe
+      install:
+        - pwd
+        - echo "install qt"
+        - ./qt-opensource-windows-x86-5.12.5.exe -v --script config/qt-installer-noninteractive.qs
+        - ls ~
+        - ls ~/Qt5.12.5
+        - ls ~/Qt5.12.5/5.12.5
+        - ls ~/Qt5.12.5/5.12.5/msvc2017_64
+        - export PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin
+        - qmake --version
+        - echo "install miniconda"
+        - ./config/miniconda-installer-noniteractive.bat
+        - ls ~
+        - ls ~/Miniconda3
+        - source ~/Miniconda3/etc/profile.d/conda.sh
+        - conda activate base
+        - conda --version
+        - python --version
+        - conda create -y -n BrainNowTfa
+        - conda activate BrainNowTfa
+        - conda install -y pyinstaller
+        - pip install src/py
+      script:
+        - docker --version
+        - pwd
+        - qmake --version
+        - mkdir build && cd build
+        - cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_PREFIX_PATH=$HOME/Qt5.12.5/5.12.5/msvc2017_64/lib/cmake
+        - cmake --build . --config Release
+        - cd ..
+        - python --version
+        - conda --version
+        - cd src/py
+        - pyinstaller tfa.spec
+        - cd ../..
+      after_success:
+        - pwd
+        - cd build/bin/Release
+        - windeployqt --release BrainNowtTfa.exe
+        - cp -r ../../../src/py/dist/tfa/* .
+        - ls
+
