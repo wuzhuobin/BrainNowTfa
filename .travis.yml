@@ -222,3 +222,11 @@ matrix:
         - windeployqt --release BrainNowtTfa.exe
         - cp -r ../../../src/py/dist/tfa/* .
         - ls
+        - cd ..
+        - zip -r Release.zip Release
+        - ls
+      deploy:
+        provider: releases
+        token: $GITHUB_TOKEN
+        file: build/bin/Release.zip
+        overwrite: true
