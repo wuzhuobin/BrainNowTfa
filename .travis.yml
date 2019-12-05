@@ -1,8 +1,8 @@
 stages: CI
-matrix:
+jobs:
   include:
     - stage: CI
-      name: "win10 msvc2017_64  qt5.12.5 miniconda-latest"
+      name: "win10 msvc2017_64 qt5.12.5 miniconda-latest"
       language: bash
       os: windows
       services:
@@ -108,12 +108,15 @@ matrix:
       after_success:
         - pwd
         - cd build/bin/Release
-        - windeployqt --release BrainNowtTfa.exe
+        - windeployqt --release BrainNowTfa.exe
         - cp -r ../../../src/py/dist/tfa/* .
+        - ls
+        - cd ..
+        - tar -cvaf Release.tar.gz Release
         - ls
 
     - stage: CI
-      name: "win10 msvc2015_64  qt5.12.5 miniconda-latest"
+      name: "win10 msvc2015_64 qt5.12.5 miniconda-latest"
       language: bash
       os: windows
       services:
@@ -219,6 +222,17 @@ matrix:
       after_success:
         - pwd
         - cd build/bin/Release
-        - windeployqt --release BrainNowtTfa.exe
+        - windeployqt --release BrainNowTfa.exe
         - cp -r ../../../src/py/dist/tfa/* .
         - ls
+        - cd ..
+        - tar -cvaf Release.tar.gz Release
+        - ls
+      deploy:
+        provider: releases
+        token: $GITHUB_TOKEN
+        file: build/bin/Release.tar.gz
+        edge: true
+        on: 
+          branch: travis-ci
+          tags: true
