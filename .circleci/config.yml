@@ -1,0 +1,18 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@1.0.0
+
+jobs:
+  build:
+    executor:
+      name: win/vs2019
+      shell: bash.exe
+    steps:
+      - checkout
+      - run: echo "Hello world!"
+      - run: choco install wget
+      - run: choco install visualstudio2017buildtools
+      - run: choco install cmake
+      - run: wget -nv https://download.qt.io/archive/qt/5.12/5.12.5/qt-opensource-windows-x86-5.12.5.exe
+      - run: wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe
