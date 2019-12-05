@@ -230,3 +230,7 @@ matrix:
         token: $GITHUB_TOKEN
         file: build/bin/Release.zip
         overwrite: true
+        edge: true
+        on: 
+          branch: travis-ci
+          tags: false
