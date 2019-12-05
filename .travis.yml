@@ -245,5 +245,5 @@ jobs:
         file: build/bin/Release.tar.gz
         edge: true
         on: 
-          branch: travis-ci
+          branch: master
           tags: true
