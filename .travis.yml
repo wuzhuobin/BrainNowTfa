@@ -223,6 +223,7 @@ matrix:
         - cp -r ../../../src/py/dist/tfa/* .
         - ls
         - cd ..
+        - zip --help
         - zip -r Release.zip Release
         - ls
       deploy:
