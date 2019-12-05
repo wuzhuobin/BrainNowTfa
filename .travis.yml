@@ -108,7 +108,7 @@ matrix:
       after_success:
         - pwd
         - cd build/bin/Release
-        - windeployqt --release BrainNowtTfa.exe
+        - windeployqt --release BrainNowTfa.exe
         - cp -r ../../../src/py/dist/tfa/* .
         - ls
 
@@ -219,17 +219,19 @@ matrix:
       after_success:
         - pwd
         - cd build/bin/Release
-        - windeployqt --release BrainNowtTfa.exe
+        - windeployqt --release BrainNowTfa.exe
         - cp -r ../../../src/py/dist/tfa/* .
         - ls
         - cd ..
         - zip --help
+        - tar --help
+        - tar -cvaf Release.tar.gz Release
         - zip -r Release.zip Release
         - ls
       deploy:
         provider: releases
         token: $GITHUB_TOKEN
-        file: build/bin/Release.zip
+        file: build/bin/Release.tar.gz
         overwrite: true
         edge: true
         on: 
