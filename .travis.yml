@@ -1,8 +1,8 @@
-stages: CI
+stages: ci
 jobs:
   include:
-    - stage: CI
-      name: "win10 msvc2017_64 qt5.12.5 miniconda-latest"
+    - stage: ci
+      name: win10_msvc2017_64_qt5_12_5_miniconda_latest
       language: bash
       os: windows
       services:
@@ -12,8 +12,12 @@ jobs:
         - wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe
       install:
         - pwd
+        - choco install wget
+        - choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+        - PATH=$PATH:'/c/Program Files/CMake/bin' cmake --version
         - echo "install msvc 2017 build-tools"
-        - choco install -y visualstudio2017buildtools
+        - choco install -y visualstudio2017buildtools --allWorkloads --includeRecommended
+        - choco install -y visualstudio2017-workload-vctools --package-parameters "--includeRecommended"
         - echo "install qt"
         - 'echo ''
           function Controller() {
@@ -74,8 +78,7 @@ jobs:
         - ls ~/Qt5.12.5
         - ls ~/Qt5.12.5/5.12.5
         - ls ~/Qt5.12.5/5.12.5/msvc2017_64
-        - export PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin
-        - qmake --version
+        - PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin qmake --version
         - echo "install miniconda"
         - 'echo '' 
           start /wait "" Miniconda3-latest-Windows-x86_64.exe /InstallationType=AllUsers /AddToPath=1 /RegisterPython=1 /S /D=%UserProfile%\Miniconda3
@@ -95,28 +98,31 @@ jobs:
       script:
         - docker --version
         - pwd
-        - qmake --version
+        - PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin qmake --version
         - mkdir build && cd build
-        - cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_PREFIX_PATH=$HOME/Qt5.12.5/5.12.5/msvc2017_64/lib/cmake
-        - cmake --build . --config Release
+        - PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_PREFIX_PATH=$HOME/Qt5.12.5/5.12.5/msvc2017_64/lib/cmake
+        - PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin cmake --build . --config Release
         - cd ..
+        - source ~/Miniconda3/etc/profile.d/conda.sh
+        - conda activate base
         - python --version
         - conda --version
         - cd src/py
+        - conda activate BrainNowTfa
         - pyinstaller tfa.spec
         - cd ../..
       after_success:
         - pwd
         - cd build/bin/Release
-        - windeployqt --release BrainNowTfa.exe
+        - PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin windeployqt --release BrainNowTfa.exe
         - cp -r ../../../src/py/dist/tfa/* .
         - ls
         - cd ..
         - tar -cvaf Release.tar.gz Release
         - ls
 
-    - stage: CI
-      name: "win10 msvc2015_64 qt5.12.5 miniconda-latest"
+    - stage: ci
+      name: win10_msvc2015_64_qt5_12_5_miniconda_latest
       language: bash
       os: windows
       services:
@@ -126,6 +132,9 @@ jobs:
         - wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe
       install:
         - pwd
+        - choco install wget
+        - choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+        - PATH=$PATH:'/c/Program Files/CMake/bin' cmake --version
         - echo "install msvc 2015 build-tools"
         - choco install -y microsoft-visual-cpp-build-tools
         - echo "install qt"
@@ -188,8 +197,7 @@ jobs:
         - ls ~/Qt5.12.5
         - ls ~/Qt5.12.5/5.12.5
         - ls ~/Qt5.12.5/5.12.5/msvc2015_64
-        - export PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2015_64/bin
-        - qmake --version
+        - PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2015_64/bin qmake --version
         - echo "install miniconda"
         - 'echo '' 
           start /wait "" Miniconda3-latest-Windows-x86_64.exe /InstallationType=AllUsers /AddToPath=1 /RegisterPython=1 /S /D=%UserProfile%\Miniconda3
@@ -209,20 +217,23 @@ jobs:
       script:
         - docker --version
         - pwd
-        - qmake --version
+        - PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2015_64/bin qmake --version
         - mkdir build && cd build
-        - cmake .. -G"Visual Studio 14 2015 Win64" -DCMAKE_PREFIX_PATH=$HOME/Qt5.12.5/5.12.5/msvc2015_64/lib/cmake
-        - cmake --build . --config Release
+        - PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin cmake .. -G"Visual Studio 14 2015 Win64" -DCMAKE_PREFIX_PATH=$HOME/Qt5.12.5/5.12.5/msvc2015_64/lib/cmake
+        - PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin cmake --build . --config Release
         - cd ..
+        - source ~/Miniconda3/etc/profile.d/conda.sh
+        - conda activate base
         - python --version
         - conda --version
         - cd src/py
+        - conda activate BrainNowTfa
         - pyinstaller tfa.spec
         - cd ../..
       after_success:
         - pwd
         - cd build/bin/Release
-        - windeployqt --release BrainNowTfa.exe
+        - PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2015_64/bin windeployqt --release BrainNowTfa.exe
         - cp -r ../../../src/py/dist/tfa/* .
         - ls
         - cd ..
