@@ -1,6 +1,7 @@
 # BrainNowTfa
 
 [![Build Status](https://travis-ci.org/wuzhuobin/BrainNowTfa.svg?branch=master)](https://travis-ci.org/wuzhuobin/BrainNowTfa)
+[![CircleCI](https://circleci.com/gh/wuzhuobin/BrainNowTfa.svg?style=svg)](https://circleci.com/gh/wuzhuobin/BrainNowTfa)
 
 * Author: WUZHUBOIN
 * Since: Aug.18.2019
