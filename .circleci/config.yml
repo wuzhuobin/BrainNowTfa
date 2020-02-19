@@ -146,7 +146,7 @@ jobs:
             ls
             cd ..
             tar -cvaf Release.tar.gz Release
-            lst
+            ls
 workflows:
   version: 2
   build:
