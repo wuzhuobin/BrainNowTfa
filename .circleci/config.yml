@@ -10,22 +10,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: before_install
-          command: >
-            choco install wget &&
-            choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' &&
-            PATH=$PATH:'/c/Program Files/CMake/bin' cmake --version &&
-            wget -nv https://download.qt.io/archive/qt/5.12/5.12.5/qt-opensource-windows-x86-5.12.5.exe &&
-            wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe
-      - run:
           name: install
-          command: >
-            pwd &&
-            echo "install msvc 2017 build-tools" &&
-            choco install -y visualstudio2017buildtools --allWorkloads --includeRecommended &&
-            choco install -y visualstudio2017-workload-vctools --package-parameters "--includeRecommended" &&
-            echo "install qt"
-            # choco install -y visualstudio2017buildtools --package-parameters Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended &&
+          command: |
+            pwd
+            choco install wget
+            choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+            PATH=$PATH:'/c/Program Files/CMake/bin' cmake --version
+            choco install -y visualstudio2017buildtools --allWorkloads --includeRecommended
+            choco install -y visualstudio2017-workload-vctools --package-parameters "--includeRecommended"
+            wget -nv https://download.qt.io/archive/qt/5.12/5.12.5/qt-opensource-windows-x86-5.12.5.exe
       - run:
           name: install
           command: 'echo ''
@@ -83,15 +76,15 @@ jobs:
           '' > qt-installer-noninteractive.qs'
       - run:
           name: install
-          command: >
-            cat qt-installer-noninteractive.qs &&
-            ./qt-opensource-windows-x86-5.12.5.exe -v --script qt-installer-noninteractive.qs &&
-            ls ~ &&
-            ls ~/Qt5.12.5 &&
-            ls ~/Qt5.12.5/5.12.5 &&
-            ls ~/Qt5.12.5/5.12.5/msvc2017_64 &&
-            PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin qmake --version &&
-            echo "install miniconda"
+          command: |
+            cat qt-installer-noninteractive.qs
+            ./qt-opensource-windows-x86-5.12.5.exe -v --script qt-installer-noninteractive.qs
+            ls ~
+            ls ~/Qt5.12.5
+            ls ~/Qt5.12.5/5.12.5
+            ls ~/Qt5.12.5/5.12.5/msvc2017_64
+            PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin qmake --version
+            wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe
       - run:
           name: install
           command: 'echo '' 
@@ -99,61 +92,186 @@ jobs:
           '' > miniconda-installer-noniteractive.bat'
       - run:
           name: install
-          command: >
-            cat miniconda-installer-noniteractive.bat &&
-            ./miniconda-installer-noniteractive.bat &&
-            ls ~ &&
-            ls ~/Miniconda3 &&
-            source ~/Miniconda3/etc/profile.d/conda.sh &&
-            conda activate base &&
-            conda --version &&
-            python --version &&
-            conda create -y -n BrainNowTfa &&
-            conda activate BrainNowTfa &&
-            conda install -y pyinstaller &&
+          command: |
+            cat miniconda-installer-noniteractive.bat
+            ./miniconda-installer-noniteractive.bat
+            ls ~
+            ls ~/Miniconda3
+            source ~/Miniconda3/etc/profile.d/conda.sh
+            conda activate base
+            conda --version
+            python --version
+            conda create -y -n BrainNowTfa
+            conda activate BrainNowTfa
+            conda install -y pyinstaller
             pip install src/py
       - run:
           name: script
-          command: >
-            docker --version &&
-            pwd &&
-            PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin qmake --version &&
-            mkdir build && cd build &&
-            PATH=$PATH:'/c/Program Files/CMake/bin' cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_PREFIX_PATH=$HOME/Qt5.12.5/5.12.5/msvc2017_64/lib/cmake &&
-            PATH=$PATH:'/c/Program Files/CMake/bin' cmake --build . --config Release &&
-            cd .. &&
-            source ~/Miniconda3/etc/profile.d/conda.sh &&
-            conda activate base &&
-            python --version &&
-            conda --version &&
-            cd src/py &&
-            conda activate BrainNowTfa &&
-            pyinstaller tfa.spec &&
+          command: |
+            docker --version
+            pwd
+            PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin qmake --version
+            mkdir build cd build &&
+            PATH=$PATH:'/c/Program Files/CMake/bin' cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_PREFIX_PATH=$HOME/Qt5.12.5/5.12.5/msvc2017_64/lib/cmake
+            PATH=$PATH:'/c/Program Files/CMake/bin' cmake --build . --config Release
+            cd ..
+            source ~/Miniconda3/etc/profile.d/conda.sh
+            conda activate base
+            python --version
+            conda --version
+            cd src/py
+            conda activate BrainNowTfa
+            pyinstaller tfa.spec
             cd ../..
       - run:
           name: after_success
-          command: >
-            pwd &&
-            cd build/bin/Release &&
-            PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin windeployqt --release BrainNowTfa.exe &&
-            cp -r ../../../src/py/dist/tfa/* . &&
-            ls &&
-            cd .. &&
-            tar -cvaf Release.tar.gz Release &&
+          command: |
+            pwd
+            cd build/bin/Release
+            PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin windeployqt --release BrainNowTfa.exe
+            cp -r ../../../src/py/dist/tfa/* .
+            ls
+            cd ..
+            tar -cvaf Release.tar.gz Release
             ls
   win10_msvc2015_64_qt5_12_5_miniconda_latest:
     executor:
       name: win/default
       shell: bash.exe
     steps:
+    working_directory: BrainNowTfa
+    executor:
+      name: win/default
+      shell: bash.exe
+    steps:
       - checkout
-      - run: echo test
       - run:
-          name: test
-          command: echo test
+          name: install
+          command: |
+            pwd
+            choco install wget
+            choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+            PATH=$PATH:'/c/Program Files/CMake/bin' cmake --version
+            choco install -y microsoft-visual-cpp-build-tools
+            wget -nv https://download.qt.io/archive/qt/5.12/5.12.5/qt-opensource-windows-x86-5.12.5.exe
+      - run:
+          name: install
+          command: 'echo ''
+            function Controller() {
+              installer.autoRejectMessageBoxes();
+              installer.installationFinished.connect(function() {
+                gui.clickButton(buttons.NextButton);
+              });
+            }
+            
+            Controller.prototype.WelcomePageCallback = function() {
+              gui.clickButton(buttons.NextButton, 3000);
+            }
+            
+            Controller.prototype.CredentialsPageCallback = function () {
+              gui.clickButton(buttons.NextButton);
+            }
+            
+            Controller.prototype.IntroductionPageCallback = function() {
+              gui.clickButton(buttons.NextButton);
+            }
+            
+            Controller.prototype.TargetDirectoryPageCallback = function () {
+              gui.currentPageWidget().TargetDirectoryLineEdit.setText(installer.value("HomeDir") + "/Qt5.12.5");
+              gui.clickButton(buttons.NextButton);
+            }
+            
+            Controller.prototype.ComponentSelectionPageCallback = function() {
+              var widget = gui.currentPageWidget();
+              widget.deselectAll();
+              widget.selectComponent("qt.qt5.5125.win64_msvc2015_64");
+              gui.clickButton(buttons.NextButton);
+            }
+            
+            Controller.prototype.LicenseAgreementPageCallback = function() {
+              gui.currentPageWidget().AcceptLicenseRadioButton.setChecked(true);
+              gui.clickButton(buttons.NextButton);
+            }
+            
+            Controller.prototype.StartMenuDirectoryPageCallback = function() {
+              gui.clickButton(buttons.NextButton);
+            }
+            
+            Controller.prototype.ReadyForInstallationPageCallback = function() {
+              gui.clickButton(buttons.NextButton);
+            }
+            
+            Controller.prototype.FinishedPageCallback = function() {
+              var checkBoxForm = gui.currentPageWidget().LaunchQtCreatorCheckBoxForm;
+              if(checkBoxForm && checkBoxForm.launchQtCreatorCheckBox) {
+                checkBoxForm.launchQtCreatorCheckBox.checked = false;
+              }
+              gui.clickButton(buttons.FinishButton);
+            }
+          '' > qt-installer-noninteractive.qs'
+      - run:
+          name: install
+          command: |
+            cat qt-installer-noninteractive.qs
+            ./qt-opensource-windows-x86-5.12.5.exe -v --script qt-installer-noninteractive.qs
+            ls ~
+            ls ~/Qt5.12.5
+            ls ~/Qt5.12.5/5.12.5
+            ls ~/Qt5.12.5/5.12.5/msvc2015_64
+            PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2015_64/bin qmake --version
+            wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe
+      - run:
+          name: install
+          command: 'echo '' 
+            start /wait "" Miniconda3-latest-Windows-x86_64.exe /InstallationType=AllUsers /AddToPath=1 /RegisterPython=1 /S /D=%UserProfile%\Miniconda3
+          '' > miniconda-installer-noniteractive.bat'
+      - run:
+          name: install
+          command: |
+            cat miniconda-installer-noniteractive.bat
+            ./miniconda-installer-noniteractive.bat
+            ls ~
+            ls ~/Miniconda3
+            source ~/Miniconda3/etc/profile.d/conda.sh
+            conda activate base
+            conda --version
+            python --version
+            conda create -y -n BrainNowTfa
+            conda activate BrainNowTfa
+            conda install -y pyinstaller
+            pip install src/py
+      - run:
+          name: script
+          command: |
+            docker --version
+            pwd
+            PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2015_64/bin qmake --version
+            mkdir build cd build &&
+            PATH=$PATH:'/c/Program Files/CMake/bin' cmake .. -G"Visual Studio 14 2015 Win64" -DCMAKE_PREFIX_PATH=$HOME/Qt5.12.5/5.12.5/msvc2015_64/lib/cmake
+            PATH=$PATH:'/c/Program Files/CMake/bin' cmake --build . --config Release
+            cd ..
+            source ~/Miniconda3/etc/profile.d/conda.sh
+            conda activate base
+            python --version
+            conda --version
+            cd src/py
+            conda activate BrainNowTfa
+            pyinstaller tfa.spec
+            cd ../..
+      - run:
+          name: after_success
+          command: |
+            pwd
+            cd build/bin/Release
+            PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2015_64/bin windeployqt --release BrainNowTfa.exe
+            cp -r ../../../src/py/dist/tfa/* .
+            ls
+            cd ..
+            tar -cvaf Release.tar.gz Release
+            lst
 workflows:
   version: 2
-  ci:
+  build:
     jobs:
       - win10_msvc2017_64_qt5_12_5_miniconda_latest
       - win10_msvc2015_64_qt5_12_5_miniconda_latest

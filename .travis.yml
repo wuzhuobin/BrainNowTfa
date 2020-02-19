@@ -1,24 +1,19 @@
-stages: ci
 jobs:
   include:
-    - stage: ci
+    - stage: build
       name: win10_msvc2017_64_qt5_12_5_miniconda_latest
       language: bash
       os: windows
       services:
         - docker
-      before_install:
-        - wget -nv https://download.qt.io/archive/qt/5.12/5.12.5/qt-opensource-windows-x86-5.12.5.exe
-        - wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe
       install:
         - pwd
         - choco install wget
         - choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
         - PATH=$PATH:'/c/Program Files/CMake/bin' cmake --version
-        - echo "install msvc 2017 build-tools"
         - choco install -y visualstudio2017buildtools --allWorkloads --includeRecommended
         - choco install -y visualstudio2017-workload-vctools --package-parameters "--includeRecommended"
-        - echo "install qt"
+        - wget -nv https://download.qt.io/archive/qt/5.12/5.12.5/qt-opensource-windows-x86-5.12.5.exe
         - 'echo ''
           function Controller() {
             installer.autoRejectMessageBoxes();
@@ -79,7 +74,7 @@ jobs:
         - ls ~/Qt5.12.5/5.12.5
         - ls ~/Qt5.12.5/5.12.5/msvc2017_64
         - PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2017_64/bin qmake --version
-        - echo "install miniconda"
+        - wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe
         - 'echo '' 
           start /wait "" Miniconda3-latest-Windows-x86_64.exe /InstallationType=AllUsers /AddToPath=1 /RegisterPython=1 /S /D=%UserProfile%\Miniconda3
         '' > miniconda-installer-noniteractive.bat'
@@ -121,23 +116,19 @@ jobs:
         - tar -cvaf Release.tar.gz Release
         - ls
 
-    - stage: ci
+    - stage: build
       name: win10_msvc2015_64_qt5_12_5_miniconda_latest
       language: bash
       os: windows
       services:
         - docker
-      before_install:
-        - wget -nv https://download.qt.io/archive/qt/5.12/5.12.5/qt-opensource-windows-x86-5.12.5.exe
-        - wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe
       install:
         - pwd
         - choco install wget
         - choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
         - PATH=$PATH:'/c/Program Files/CMake/bin' cmake --version
-        - echo "install msvc 2015 build-tools"
         - choco install -y microsoft-visual-cpp-build-tools
-        - echo "install qt"
+        - wget -nv https://download.qt.io/archive/qt/5.12/5.12.5/qt-opensource-windows-x86-5.12.5.exe
         - 'echo ''
           function Controller() {
             installer.autoRejectMessageBoxes();
@@ -198,7 +189,7 @@ jobs:
         - ls ~/Qt5.12.5/5.12.5
         - ls ~/Qt5.12.5/5.12.5/msvc2015_64
         - PATH=$PATH:$HOME/Qt5.12.5/5.12.5/msvc2015_64/bin qmake --version
-        - echo "install miniconda"
+        - wget -nv https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe
         - 'echo '' 
           start /wait "" Miniconda3-latest-Windows-x86_64.exe /InstallationType=AllUsers /AddToPath=1 /RegisterPython=1 /S /D=%UserProfile%\Miniconda3
         '' > miniconda-installer-noniteractive.bat'
@@ -247,3 +238,5 @@ jobs:
         on: 
           branch: master
           tags: true
+
+stages: build
