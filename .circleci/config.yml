@@ -18,67 +18,8 @@ jobs:
             PATH=$PATH:'/c/Program Files/CMake/bin' cmake --version
             choco install -y visualstudio2017buildtools --allWorkloads --includeRecommended
             choco install -y visualstudio2017-workload-vctools --package-parameters "--includeRecommended"
-            wget -nv https://download.qt.io/archive/qt/5.12/5.12.5/qt-opensource-windows-x86-5.12.5.exe
-      - run:
-          name: install
-          command: 'echo ''
-            function Controller() {
-              installer.autoRejectMessageBoxes();
-              installer.installationFinished.connect(function() {
-                gui.clickButton(buttons.NextButton);
-              });
-            }
-            
-            Controller.prototype.WelcomePageCallback = function() {
-              gui.clickButton(buttons.NextButton, 3000);
-            }
-            
-            Controller.prototype.CredentialsPageCallback = function () {
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.IntroductionPageCallback = function() {
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.TargetDirectoryPageCallback = function () {
-              gui.currentPageWidget().TargetDirectoryLineEdit.setText(installer.value("HomeDir") + "/Qt5.12.5");
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.ComponentSelectionPageCallback = function() {
-              var widget = gui.currentPageWidget();
-              widget.deselectAll();
-              widget.selectComponent("qt.qt5.5125.win64_msvc2017_64");
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.LicenseAgreementPageCallback = function() {
-              gui.currentPageWidget().AcceptLicenseRadioButton.setChecked(true);
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.StartMenuDirectoryPageCallback = function() {
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.ReadyForInstallationPageCallback = function() {
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.FinishedPageCallback = function() {
-              var checkBoxForm = gui.currentPageWidget().LaunchQtCreatorCheckBoxForm;
-              if(checkBoxForm && checkBoxForm.launchQtCreatorCheckBox) {
-                checkBoxForm.launchQtCreatorCheckBox.checked = false;
-              }
-              gui.clickButton(buttons.FinishButton);
-            }
-          '' > qt-installer-noninteractive.qs'
-      - run:
-          name: install
-          command: |
-            cat qt-installer-noninteractive.qs
-            ./qt-opensource-windows-x86-5.12.5.exe -v --script qt-installer-noninteractive.qs
+            choco install 7zip.portable
+            ./install-qt.sh --version 5.12.5 --directory ~/Qt5.12.5 --toolchain win64_msvc2017_64 qtbase
             ls ~
             ls ~/Qt5.12.5
             ls ~/Qt5.12.5/5.12.5
@@ -149,67 +90,8 @@ jobs:
             choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
             PATH=$PATH:'/c/Program Files/CMake/bin' cmake --version
             choco install -y microsoft-visual-cpp-build-tools
-            wget -nv https://download.qt.io/archive/qt/5.12/5.12.5/qt-opensource-windows-x86-5.12.5.exe
-      - run:
-          name: install
-          command: 'echo ''
-            function Controller() {
-              installer.autoRejectMessageBoxes();
-              installer.installationFinished.connect(function() {
-                gui.clickButton(buttons.NextButton);
-              });
-            }
-            
-            Controller.prototype.WelcomePageCallback = function() {
-              gui.clickButton(buttons.NextButton, 3000);
-            }
-            
-            Controller.prototype.CredentialsPageCallback = function () {
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.IntroductionPageCallback = function() {
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.TargetDirectoryPageCallback = function () {
-              gui.currentPageWidget().TargetDirectoryLineEdit.setText(installer.value("HomeDir") + "/Qt5.12.5");
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.ComponentSelectionPageCallback = function() {
-              var widget = gui.currentPageWidget();
-              widget.deselectAll();
-              widget.selectComponent("qt.qt5.5125.win64_msvc2015_64");
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.LicenseAgreementPageCallback = function() {
-              gui.currentPageWidget().AcceptLicenseRadioButton.setChecked(true);
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.StartMenuDirectoryPageCallback = function() {
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.ReadyForInstallationPageCallback = function() {
-              gui.clickButton(buttons.NextButton);
-            }
-            
-            Controller.prototype.FinishedPageCallback = function() {
-              var checkBoxForm = gui.currentPageWidget().LaunchQtCreatorCheckBoxForm;
-              if(checkBoxForm && checkBoxForm.launchQtCreatorCheckBox) {
-                checkBoxForm.launchQtCreatorCheckBox.checked = false;
-              }
-              gui.clickButton(buttons.FinishButton);
-            }
-          '' > qt-installer-noninteractive.qs'
-      - run:
-          name: install
-          command: |
-            cat qt-installer-noninteractive.qs
-            ./qt-opensource-windows-x86-5.12.5.exe -v --script qt-installer-noninteractive.qs
+            choco install 7zip.portable
+            ./install-qt.sh --version 5.12.5 --directory ~/Qt5.12.5 --toolchain win64_msvc2015_64 qtbase
             ls ~
             ls ~/Qt5.12.5
             ls ~/Qt5.12.5/5.12.5
