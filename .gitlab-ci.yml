@@ -12,18 +12,7 @@ win10_msvc2015_64_qt5_12_5_miniconda_latest:
   script:
     - echo Hello, %USERNAME%!
     - echo "Hello World"
-stages:
-  - .pre
-  - build
-  - .postwindows job:
-  stage:
-    - build
-  tags:
-    - windows
-  script:
-    - echo Hello, %USERNAME%!
-    - echo "Hello World"
-  
+    
 stages:
   - .pre
   - build
