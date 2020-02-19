@@ -135,10 +135,6 @@ jobs:
             tar -cvaf Release.tar.gz Release
             ls
   win10_msvc2015_64_qt5_12_5_miniconda_latest:
-    executor:
-      name: win/default
-      shell: bash.exe
-    steps:
     working_directory: BrainNowTfa
     executor:
       name: win/default
